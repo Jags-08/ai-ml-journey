@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Assistant – NeuroWell</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/chat.css"/>
+</head>
+<body>
+  <canvas id="neural-canvas"></canvas>
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">🧠</div>
+        <div class="logo-text">
+          <div class="logo-name">NeuroWell</div>
+          <div class="logo-sub">Health AI</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <div class="nav-item" data-page="dashboard.html"><span class="nav-icon">📊</span> Dashboard</div>
+        <div class="nav-item active" data-page="chat.html"><span class="nav-icon">🧠</span> AI Assistant</div>
+        <div class="nav-item" data-page="reports.html"><span class="nav-icon">📄</span> Reports</div>
+        <div class="nav-section-label" style="margin-top:8px">Monitor</div>
+        <div class="nav-item" data-page="dashboard.html"><span class="nav-icon">⚠️</span> Alerts
+          <span class="nav-badge" id="alert-badge" style="display:none">0</span></div>
+        <div class="nav-item" data-page="dashboard.html"><span class="nav-icon">📅</span> Log History</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar" id="user-avatar">A</div>
+          <div>
+            <div class="user-name"  id="user-name">Loading...</div>
+            <div class="user-email" id="user-email">...</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm btn-full" id="logout-btn" style="margin-top:10px">🚪 Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <main class="main-content">
+      <div class="page-inner">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">AI Health Assistant</h1>
+            <p class="page-subtitle">Powered by NeuroWell AI • Aware of your health data</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" id="clear-chat-btn">🗑 Clear Chat</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start">
+          <!-- CHAT BOX -->
+          <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 200px);min-height:500px">
+            <!-- Header -->
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+              <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--violet));display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 15px rgba(0,229,255,0.3)">🧠</div>
+              <div>
+                <div style="font-weight:700;font-size:15px">NeuroWell AI</div>
+                <div style="font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:6px">
+                  <span class="pulse-dot"></span> Online • Health-aware
+                </div>
+              </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="chat-messages"></div>
+
+            <!-- Suggestions -->
+            <div class="suggestions-row" id="suggestions-row"></div>
+
+            <!-- Input -->
+            <div class="chat-input-area">
+              <div class="input-row">
+                <textarea
+                  id="chat-input"
+                  placeholder="Ask about your health, symptoms, trends..."
+                  rows="1"
+                ></textarea>
+                <div class="chat-tools">
+                  <button class="chat-tool-btn" id="voice-btn" title="Voice input">🎙️</button>
+                  <button class="send-btn" id="send-btn" title="Send message">➤</button>
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--text-muted);text-align:center">
+                ⚕️ For medical emergencies, always consult a qualified healthcare professional
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTEXT PANEL -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="context-panel">
+              <h3>📊 Your Health Context</h3>
+              <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px">AI is aware of this data</p>
+              <div id="context-panel-items">
+                <div style="text-align:center;padding:12px"><span class="spinner"></span></div>
+              </div>
+            </div>
+
+            <div class="context-panel">
+              <h3>💡 What to ask</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+                <button class="suggestion-chip" style="text-align:left;border-radius:8px" onclick="document.getElementById('chat-input').value=this.textContent.trim();sendMessage()">
+                  Why am I so tired lately?
+                </button>
+                <button class="suggestion-chip" style="text-align:left;border-radius:8px" onclick="document.getElementById('chat-input').value=this.textContent.trim();sendMessage()">
+                  How's my sleep quality?
+                </button>
+                <button class="suggestion-chip" style="text-align:left;border-radius:8px" onclick="document.getElementById('chat-input').value=this.textContent.trim();sendMessage()">
+                  Give me a health summary
+                </button>
+                <button class="suggestion-chip" style="text-align:left;border-radius:8px" onclick="document.getElementById('chat-input').value=this.textContent.trim();sendMessage()">
+                  Tips to boost my mood?
+                </button>
+                <button class="suggestion-chip" style="text-align:left;border-radius:8px" onclick="document.getElementById('chat-input').value=this.textContent.trim();sendMessage()">
+                  Am I exercising enough?
+                </button>
+              </div>
+            </div>
+
+            <div class="context-panel">
+              <h3>🎙️ Voice Tips</h3>
+              <p style="font-size:12px;color:var(--text-muted);line-height:1.6">
+                Click the 🎙️ button and speak your question naturally. The AI understands conversational language.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--text-muted)">
+                Supported: Chrome, Edge, Safari
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/patterns.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
