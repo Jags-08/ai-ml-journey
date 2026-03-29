@@ -78,22 +78,22 @@ It connects to your **local LLM via LM Studio** (OpenAI-compatible API) to give 
 ## 📸 Screenshots
 
 ### 📊 Dashboard
-<img src="./assets/dashboard.png" width="100%"/>
+<img src="./neurowell-ai-health-system/assets/dashboard.png" width="100%"/>
 
 ### 🧠 AI Assistant
-<img src="./assets/ai.png" width="100%"/>
+<img src="./neurowell-ai-health-system/assets/ai.png" width="100%"/>
 
 ### 📄 Reports
-<img src="./assets/reports.png" width="100%"/>
+<img src="./neurowell-ai-health-system/assets/reports.png" width="100%"/>
 
 ### 📋 Log History
-<img src="./assets/log.png" width="100%"/>
+<img src="./neurowell-ai-health-system/assets/log.png" width="100%"/>
 
 ### ⚠️ Alerts
-<img src="./assets/alerts.png" width="100%"/>
+<img src="./neurowell-ai-health-system/assets/alerts.png" width="100%"/>
 
 ### 📑 PDF Report
-<img src="./assets/pdf.png" width="80%"/>
+<img src="./neurowell-ai-health-system/assets/pdf.png" width="80%"/>
 
 ## 📁 Project Structure
 
