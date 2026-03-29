@@ -75,6 +75,26 @@ It connects to your **local LLM via LM Studio** (OpenAI-compatible API) to give 
   <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
 </p>
 
+## 📸 Screenshots
+
+### 📊 Dashboard
+<img src="./assets/dashboard.png" width="100%"/>
+
+### 🧠 AI Assistant
+<img src="./assets/ai.png" width="100%"/>
+
+### 📄 Reports
+<img src="./assets/reports.png" width="100%"/>
+
+### 📋 Log History
+<img src="./assets/log.png" width="100%"/>
+
+### ⚠️ Alerts
+<img src="./assets/alerts.png" width="100%"/>
+
+### 📑 PDF Report
+<img src="./assets/pdf.png" width="80%"/>
+
 ## 📁 Project Structure
 
 ```
