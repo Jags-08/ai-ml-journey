@@ -136,22 +136,22 @@ It connects to your **local LLM via LM Studio** (OpenAI-compatible API) to give 
 ## 📸 Screenshots
 
 ### 📊 Dashboard
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/dashboard.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Dashboard.png" />
 
 ### 🧠 AI Assistant
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/ai.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Ai.png" />
 
 ### 📄 Reports
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/reports.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Reports.png" />
 
 ### 📋 Log History
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/log.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Log History.png" />
 
 ### ⚠️ Alerts
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/alerts.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Alerts.png" />
 
 ### 📑 PDF Report
-<img src="./assets/pdf.png" width="80%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Pdfreports.png" />
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
