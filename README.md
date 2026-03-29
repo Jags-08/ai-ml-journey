@@ -1,6 +1,8 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=240&text=NeuroWell&fontSize=80&fontColor=00E5FF&color=0:03050f,100:0d1628&desc=AI%20Personal%20Health%20Intelligence%20System&descSize=22&descAlignY=75&descAlign=50"/>
-</p>
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&height=240&text=NeuroWell&fontSize=80&fontColor=00E5FF&color=0:03050f,100:0d1628&desc=AI%20Personal%20Health%20Intelligence%20System&descSize=22&descAlignY=75&descAlign=50" width="100%" />
+
+</div>
 
 <br/>
 
