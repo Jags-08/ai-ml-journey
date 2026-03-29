@@ -5,9 +5,7 @@
 <br/>
 
 <p align="center">
-  <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1000&color=00E5FF&center=true&vCenter=true&width=800&lines=🧠+AI-Powered+Personal+Health+Tracker;🎙️+Voice+Input+%2B+TTS+Speaker+Output;😰+Real-time+Emotion+Detection;📊+Interactive+Charts+%2B+Health+Score;🤖+Local+LLM+via+LM+Studio+(Streaming);📄+Auto-Generated+PDF+Health+Reports;🔐+Secure+Login+%2B+Long-term+Memory;📱+Progressive+Web+App+(Offline+Ready)" alt="Typing SVG" />
-  </a>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=18&pause=1000&color=00E5FF&center=true&vCenter=true&width=600&lines=AI-Powered+Personal+Health+Tracker;Voice+Input+and+TTS+Output;Real-time+Emotion+Detection;Interactive+Charts+and+Health+Score;Local+LLM+Integration;Auto+Generated+Health+Reports;Secure+Login+and+Memory;Progressive+Web+App" />
 </p>
 
 <br/>
