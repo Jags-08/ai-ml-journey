@@ -8,12 +8,12 @@ const LLMConfig = {
 
   /* ── Local LM Studio Settings ── */
   local: {
-    baseURL:    'http://localhost:1234/v1',
-    apiKey:     'lm-studio',            // LM Studio accepts any non-empty string
-    model:      'gpt-4o-mini-2024-07-18', // Change to your loaded model identifier
-    maxTokens:  2048,
+    baseURL: 'http://127.0.0.1:1234/v1',
+    apiKey: 'lm-studio',            // LM Studio accepts any non-empty string
+    model: 'gpt-4o-mini-2024-07-18', // Change to your loaded model identifier
+    maxTokens: 2048,
     temperature: 0.7,
-    streaming:  true,
+    streaming: true,
   },
 
   /* ── Status ── */
@@ -50,7 +50,6 @@ PERSONALITY: Warm, professional, knowledgeable — like a caring doctor friend.`
     try {
       const res = await fetch(`${this.local.baseURL}/models`, {
         method: 'GET',
-        headers: { 'Authorization': `Bearer ${this.local.apiKey}` },
         signal: AbortSignal.timeout(3000)
       });
       if (res.ok) {
@@ -75,7 +74,6 @@ PERSONALITY: Warm, professional, knowledgeable — like a caring doctor friend.`
   async getModels() {
     try {
       const res = await fetch(`${this.local.baseURL}/models`, {
-        headers: { 'Authorization': `Bearer ${this.local.apiKey}` },
         signal: AbortSignal.timeout(3000)
       });
       const data = await res.json();
@@ -91,15 +89,15 @@ PERSONALITY: Warm, professional, knowledgeable — like a caring doctor friend.`
     const res = await fetch(`${this.local.baseURL}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.local.apiKey}`
       },
       body: JSON.stringify({
-        model:       options.model       || this.local.model,
+        model: options.model || this.local.model,
         messages,
-        max_tokens:  options.maxTokens   || this.local.maxTokens,
+        max_tokens: options.maxTokens || this.local.maxTokens,
         temperature: options.temperature || this.local.temperature,
-        stream:      false
+        stream: false
       }),
       signal: AbortSignal.timeout(60000)
     });
@@ -121,24 +119,24 @@ PERSONALITY: Warm, professional, knowledgeable — like a caring doctor friend.`
     const res = await fetch(`${this.local.baseURL}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.local.apiKey}`
       },
       body: JSON.stringify({
-        model:       options.model       || this.local.model,
+        model: options.model || this.local.model,
         messages,
-        max_tokens:  options.maxTokens   || this.local.maxTokens,
+        max_tokens: options.maxTokens || this.local.maxTokens,
         temperature: options.temperature || this.local.temperature,
-        stream:      true
+        stream: true
       }),
       signal: options.signal || AbortSignal.timeout(120000)
     });
 
     if (!res.ok) throw new Error(`LLM stream error ${res.status}`);
 
-    const reader  = res.body.getReader();
+    const reader = res.body.getReader();
     const decoder = new TextDecoder();
-    let buffer    = '';
+    let buffer = '';
 
     while (true) {
       const { done, value } = await reader.read();
