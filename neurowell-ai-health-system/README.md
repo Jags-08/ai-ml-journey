@@ -139,7 +139,7 @@ It connects to your **local LLM via LM Studio** (OpenAI-compatible API) to give 
 <img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Dashboard.png" />
 
 ### 🧠 AI Assistant
-<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Ai.png" />
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/AI.png" />
 
 ### 📄 Reports
 <img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/Reports.png" />
