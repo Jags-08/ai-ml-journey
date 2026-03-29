@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=260&text=AI-ML%20Journey&fontSize=85&fontColor=00E5FF&color=0:03050f,50:0a0f2e,100:0d1628&desc=Learn%20%C2%B7%20Build%20%C2%B7%20Deploy%20%C2%B7%20Grow&descSize=26&descAlignY=75&descAlign=50&animation=fadeIn" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=250&text=AI-ML%20Journey&fontSize=85&fontColor=00E5FF&color=0:03050f,50:0a0f2e,100:0d1628&desc=Learn%20%C2%B7%20Build%20%C2%B7%20Deploy%20%C2%B7%20Grow&descSize=26&descAlignY=75&descAlign=50&animation=fadeIn" width="100%" />
 
 <br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00E5FF&center=true&vCenter=true&width=700&lines=Structured+AI+%26+ML+Learning+Path+🧠;Real-World+AI+Projects+from+Scratch+🚀;Learn+→+Implement+→+Apply+→+Improve+🔄;Building+Intelligent+Systems+that+Matter+💡" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00E5FF&center=true&vCenter=true&width=800&lines=Structured+AI+%26+ML+Learning+Path+%F0%9F%A7%A0;Real-World+AI+Projects+from+Scratch+%F0%9F%9A%80;Learn+to+Implement+to+Apply+to+Improve+%F0%9F%94%84;Building+Intelligent+Systems+that+Matter+%F0%9F%92%A1" />
 
 <br/><br/>
 
@@ -14,7 +14,7 @@
 <img src="https://img.shields.io/badge/Projects-2-ff3d6b?style=for-the-badge&logo=rocket&logoColor=white"/>
 <img src="https://img.shields.io/badge/License-MIT-39ff8f?style=for-the-badge"/>
 
-<br/><br/>
+<br/>
 
 <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white"/>
 <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
