@@ -136,19 +136,19 @@ It connects to your **local LLM via LM Studio** (OpenAI-compatible API) to give 
 ## 📸 Screenshots
 
 ### 📊 Dashboard
-<img src="./assets/dashboard.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/dashboard.png" />
 
 ### 🧠 AI Assistant
-<img src="./assets/ai.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/ai.png" />
 
 ### 📄 Reports
-<img src="./assets/reports.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/reports.png" />
 
 ### 📋 Log History
-<img src="./assets/log.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/log.png" />
 
 ### ⚠️ Alerts
-<img src="./assets/alerts.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Jags-08/ai-ml-journey/main/neurowell-ai-health-system/assets/alerts.png" />
 
 ### 📑 PDF Report
 <img src="./assets/pdf.png" width="80%"/>
