@@ -408,6 +408,6 @@ See LICENSE file for details.
 
 <br/>
 
-<<p align="center">
+<p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:03050f,30:0d1628,70:0d1628,100:03050f&height=120&section=footer&animation=fadeIn" width="100%" />
 </p>
