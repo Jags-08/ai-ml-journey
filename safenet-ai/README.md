@@ -162,19 +162,32 @@ The most powerful feature 🔥 — context-aware, on-device, RAG-powered:
 
 ## 📸 Screenshots
 
-> *(Add screenshots to your `assets/` folder and update the paths below)*
-
-### 📊 Dashboard
+### 📊 Dashboard (Dark Mode)
 <img src="assets/Dashboard.png" />
 
-### 🧠 AI Copilot
-<img src="assets/AI.png" />
+### 🌞 Dashboard (Light Mode)
+<img src="assets/Dashboard Light Mode.png" />
 
-### 🔍 Threat Detection
-<img src="assets/Threats.png" />
+### 🤖 AI Copilot
+<img src="assets/AI copilot.png" />
 
-### 📄 Reports
-<img src="assets/Reports.png" />
+### ⚡ SOAR Audit Log & Response
+<img src="assets/SOAR Audit Log.png" />
+
+### 🧠 User Behavior Analytics (UBA)
+<img src="assets/User Behaviour.png" />
+
+### 🌐 IP Intelligence & Threat Blacklist
+<img src="assets/IP Tracker.png" />
+
+### 📩 Email Analyzer (Phishing Detection)
+<img src="assets/Email Analyzer.png" />
+
+### 🚨 Alert Actions (Critical Response)
+<img src="assets/Alert actions.png" />
+
+### 📡 Channels & Alert Configuration
+<img src="assets/Channel.png" />
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
