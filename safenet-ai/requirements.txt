@@ -1,0 +1,23 @@
+flask>=3.0.0
+flask-socketio>=5.3.6
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# ── Real-time messaging ──────────────────────────
+twilio>=8.10.0          # SMS + Voice calls
+sendgrid>=6.11.0        # Email alerts
+
+# ── WebSocket transport ──────────────────────────
+gevent>=23.9.0
+gevent-websocket>=0.10.1
+
+# ── Optional ML models (future) ─────────────────
+# scikit-learn>=1.4.0
+# xgboost>=2.0.0
+# numpy>=1.26.0
+# pandas>=2.2.0
+
+# ── SafeNet v4 additions ────────────────────────
+# (all others already listed above)
+# No new pip deps needed — ip-api.com is free REST, no key
