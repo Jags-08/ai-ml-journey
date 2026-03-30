@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SafeNet AI v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<style>
+/* ═══ TOKENS ═══════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#070709;--ink:#0e0e13;--surface:#121219;--lift:#1a1a25;--lift2:#21212f;
+  --bdr:rgba(201,168,76,.09);--bdr2:rgba(201,168,76,.2);--bdr3:rgba(201,168,76,.38);
+  --gold:#c9a84c;--goldb:#e8d5a3;--golddim:rgba(201,168,76,.35);--goldg:rgba(201,168,76,.07);
+  --red:#ff1a36;--redb:#ff3352;--reddim:rgba(255,26,54,.12);--redbdr:rgba(255,26,54,.38);
+  --amber:#e08820;--amberdim:rgba(224,136,32,.11);--ambdbr:rgba(224,136,32,.35);
+  --sage:#3db87a;--sagedim:rgba(61,184,122,.09);
+  --ice:#4a9eff;--icedim:rgba(74,158,255,.1);
+  --purple:#a855f7;--purpledim:rgba(168,85,247,.1);
+  --txt:rgba(232,213,163,.62);--txtb:#e8d5a3;--txtd:rgba(201,168,76,.24);
+  --shadow:0 4px 28px rgba(0,0,0,.58);
+}
+[data-theme="light"]{
+  --bg:#f5f1e8;--ink:#ede8db;--surface:#e6e0d0;--lift:#dbd4c0;--lift2:#cfc7b0;
+  --bdr:rgba(100,75,20,.12);--bdr2:rgba(100,75,20,.24);--bdr3:rgba(100,75,20,.42);
+  --gold:#7a5208;--goldb:#4a2e00;--golddim:rgba(100,75,20,.4);--goldg:rgba(100,75,20,.06);
+  --red:#cc0020;--redb:#e8001e;--reddim:rgba(204,0,32,.08);--redbdr:rgba(204,0,32,.32);
+  --amber:#a05800;--amberdim:rgba(160,88,0,.09);--ambdbr:rgba(160,88,0,.30);
+  --sage:#1a7a48;--sagedim:rgba(26,122,72,.09);
+  --ice:#1650bb;--icedim:rgba(22,80,187,.08);
+  --purple:#7c3aed;--purpledim:rgba(124,58,237,.09);
+  --txt:rgba(60,40,10,.74);--txtb:#3c280a;--txtd:rgba(100,75,20,.36);
+  --shadow:0 4px 18px rgba(0,0,0,.10);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+::-webkit-scrollbar{width:2px;height:2px}::-webkit-scrollbar-thumb{background:var(--bdr2)}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:11px;letter-spacing:.03em;display:flex;flex-direction:column;transition:background .3s,color .3s}
+/* ═══ HEADER ═══ */
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid var(--bdr);flex-shrink:0;gap:12px}
+.wm{display:flex;align-items:center;gap:11px;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;letter-spacing:.18em;color:var(--goldb)}
+.crest{width:28px;height:28px;border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gold);position:relative;flex-shrink:0}
+.crest::before{content:'';position:absolute;inset:3px;border:1px solid var(--bdr)}
+.wm-sub{font-size:7px;letter-spacing:.32em;color:var(--txtd);margin-top:1px;font-family:'IBM Plex Mono',monospace}
+.hd-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hd-pill{display:flex;align-items:center;gap:5px;border:1px solid var(--bdr);padding:3px 9px;font-size:8px;color:var(--txtd);letter-spacing:.14em;cursor:pointer;transition:all .2s}
+.hd-pill:hover,.hd-pill.on{border-color:var(--bdr3);color:var(--goldb)}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--sage);box-shadow:0 0 5px var(--sage);animation:pulseA 2s infinite;flex-shrink:0}
+.dot.r{background:var(--red);box-shadow:0 0 5px var(--red)}
+.dot.a{background:var(--amber);box-shadow:0 0 5px var(--amber)}
+.llm-pill{font-size:8px;padding:3px 8px;border:1px solid var(--bdr);color:var(--txtd);transition:all .3s;letter-spacing:.12em}
+.llm-pill.ok{border-color:var(--sage);color:var(--sage)}.llm-pill.err{border-color:var(--redbdr);color:var(--redb)}
+.threat-badge{background:var(--red);color:#fff;font-size:9px;font-weight:500;padding:2px 7px;display:none;animation:pulseA 1.5s infinite}
+.threat-badge.show{display:inline-block}
+.tt-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--bdr);padding:3px 9px;transition:border-color .2s}
+.tt-wrap:hover{border-color:var(--bdr3)}
+.tt-track{width:28px;height:14px;border-radius:9px;background:var(--lift);border:1px solid var(--bdr2);position:relative;transition:background .3s}
+[data-theme="light"] .tt-track{background:var(--gold)}
+.tt-knob{position:absolute;top:2px;left:2px;width:8px;height:8px;border-radius:50%;background:var(--txtd);transition:transform .3s,background .3s}
+[data-theme="light"] .tt-knob{transform:translateX(14px);background:var(--bg)}
+.tt-lbl{font-size:8px;color:var(--txtd);letter-spacing:.2em}
+#clk{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--golddim)}
+@keyframes pulseA{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.65)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes flash{0%{background:rgba(255,26,54,.42)}100%{background:var(--reddim)}}
+@keyframes slideIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@keyframes notifIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes notifOut{from{opacity:1}to{opacity:0;transform:translateX(16px)}}
+/* ═══ KPIs ═══ */
+.kpis{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--bdr);flex-shrink:0}
+.kpi{padding:10px 16px;border-right:1px solid var(--bdr);transition:background .2s;cursor:default}
+.kpi:last-child{border-right:none}.kpi:hover{background:var(--goldg)}
+.kpi-l{font-size:7px;letter-spacing:.3em;color:var(--txtd);margin-bottom:4px;text-transform:uppercase}
+.kpi-v{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--goldb);line-height:1;transition:color .4s}
+.kpi-v.red{color:var(--redb);text-shadow:0 0 16px rgba(255,26,54,.4)}
+.kpi-v.amb{color:var(--amber)}.kpi-v.ice{color:var(--ice)}.kpi-v.sage{color:var(--sage)}.kpi-v.pur{color:var(--purple)}
+.kpi-s{font-size:8px;color:var(--txtd);margin-top:2px}
+/* ═══ TAB NAV ═══ */
+.tab-nav{display:flex;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto}
+.tab-btn{padding:7px 18px;font-size:9px;letter-spacing:.2em;color:var(--txtd);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;font-family:'IBM Plex Mono',monospace}
+.tab-btn:hover{color:var(--txt)}.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* ═══ TAB PANELS ═══ */
+.tab-panels{flex:1;overflow:hidden;position:relative}
+.tab-panel{position:absolute;inset:0;display:none;overflow:hidden}
+.tab-panel.active{display:flex}
+/* ═══ PANEL / COL ═══ */
+.grid-3{display:grid;grid-template-columns:1fr 1fr 280px;flex:1;overflow:hidden}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden}
+.col{display:flex;flex-direction:column;border-right:1px solid var(--bdr);overflow:hidden}
+.col:last-child{border-right:none}
+.col-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 18px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.col-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--gold);letter-spacing:.12em}
+.col-meta{font-size:8px;color:var(--txtd)}
+/* ═══ LOG STREAM ═══ */
+.log-thead{display:grid;grid-template-columns:66px 110px 34px 40px 1fr 50px;padding:3px 18px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.lth{font-size:7px;letter-spacing:.25em;color:var(--txtd);text-transform:uppercase}
+.log-feed{flex:1;overflow-y:auto}
+.log-row{display:grid;grid-template-columns:66px 110px 34px 40px 1fr 50px;padding:4px 18px;border-bottom:1px solid rgba(201,168,76,.03);align-items:center;transition:background .1s}
+.log-row:hover{background:var(--goldg)}
+.log-row.is-threat{background:var(--reddim);border-bottom:1px solid rgba(255,26,54,.09);animation:flash .4s ease}
+.log-row.is-warn{background:var(--amberdim)}
+.lr-time{font-size:9px;color:var(--txtd)}.lr-ip{font-size:10px;color:var(--ice)}.lr-p{font-size:9px;color:var(--txtd)}.lr-port{font-size:9px;color:var(--txtd)}
+.lr-msg{font-size:10px;color:var(--txt);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.log-row.is-threat .lr-msg{color:var(--redb);font-weight:500;text-shadow:0 0 9px rgba(255,51,82,.28)}
+.log-row.is-warn .lr-msg{color:var(--amber)}
+.lr-badge{font-size:7px;padding:2px 4px;text-align:center;letter-spacing:.1em;border:1px solid}
+.b-ok{border-color:rgba(61,184,122,.25);color:var(--sage)}.b-warn{border-color:var(--ambdbr);color:var(--amber)}.b-crit{border-color:var(--redbdr);color:var(--redb);font-weight:500}
+/* ═══ ALERTS ═══ */
+.alerts-scroll{flex:1;overflow-y:auto;padding:4px 0}
+.alert-item{margin:3px 9px;padding:8px 11px;border:1px solid var(--bdr);background:var(--surface);cursor:pointer;animation:slideIn .22s ease;transition:border-color .2s;position:relative}
+.alert-item:hover{border-color:var(--bdr2)}
+.alert-item.crit{border-left:3px solid var(--red);background:var(--reddim)}
+.alert-item.high{border-left:3px solid var(--amber);background:var(--amberdim)}
+.alert-item.med{border-left:3px solid var(--ice)}
+.ai-type{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;font-weight:500}
+.alert-item.crit .ai-type{color:var(--redb);text-shadow:0 0 8px rgba(255,51,82,.25)}
+.alert-item.high .ai-type{color:var(--amber)}.alert-item.med .ai-type{color:var(--ice)}
+.ai-sev{font-size:7px;letter-spacing:.2em;color:var(--txtd);float:right}
+.ai-msg{font-size:9px;color:var(--txt);margin-top:3px;line-height:1.5}
+.alert-item.crit .ai-msg{color:rgba(255,180,180,.88)}
+.ai-ip{font-size:8px;color:var(--ice);margin-top:2px}.ai-ts{font-size:8px;color:var(--txtd)}
+.dp-row{display:flex;gap:3px;margin-top:4px}
+.dp{font-size:7px;padding:1px 4px;border:1px solid;letter-spacing:.09em;opacity:.4;transition:opacity .3s}.dp.sent{opacity:1}
+.dp-s{border-color:var(--sage);color:var(--sage)}.dp-e{border-color:var(--ice);color:var(--ice)}.dp-c{border-color:var(--amber);color:var(--amber)}.dp-w{border-color:var(--txtd);color:var(--txtd)}
+/* ═══ AI BOX ═══ */
+.ai-box{flex-shrink:0;margin:6px 8px;padding:9px 11px;border:1px solid var(--bdr);background:var(--surface)}
+.ai-head{font-family:'Cormorant Garamond',serif;font-size:11px;font-style:italic;color:var(--golddim);letter-spacing:.12em;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.ai-cur{display:inline-block;width:4px;height:10px;background:var(--gold);vertical-align:middle;opacity:0}
+.ai-cur.on{animation:blink .65s step-end infinite;opacity:1}
+.ai-txt{font-size:9px;color:var(--txt);line-height:1.7}
+/* ═══ CHANNELS COL ═══ */
+.thresh-row{display:flex;align-items:center;justify-content:space-between;margin:5px 9px 2px;padding:6px 10px;border:1px solid var(--bdr);background:var(--surface)}
+.thresh-lbl{font-size:7px;letter-spacing:.22em;color:var(--txtd)}
+.thresh-btns{display:flex;gap:3px}
+.tb{font-size:7px;padding:2px 7px;letter-spacing:.13em;border:1px solid var(--bdr);background:none;color:var(--txtd);cursor:pointer;transition:all .2s}
+.tb.active{border-color:var(--gold);color:var(--gold);background:var(--goldg)}
+.tb.active.rt{border-color:var(--red);color:var(--redb);background:var(--reddim)}
+.cache-row{display:flex;align-items:center;justify-content:space-between;margin:2px 9px 3px;padding:5px 10px;border:1px solid var(--bdr);background:var(--surface);font-size:8px}
+.cache-lbl{color:var(--txtd);letter-spacing:.12em}.cache-val{color:var(--sage)}
+.cache-clear{color:var(--txtd);cursor:pointer;font-size:7px;border:1px solid var(--bdr);padding:1px 5px;transition:all .2s}
+.cache-clear:hover{border-color:var(--redbdr);color:var(--redb)}
+.ch-scroll{flex:1;overflow-y:auto;padding:2px 0}
+.ch-card{margin:3px 9px;border:1px solid var(--bdr);background:var(--surface);overflow:hidden;transition:border-color .22s}
+.ch-card:hover{border-color:var(--bdr2)}.ch-card.on{border-color:var(--gold)}
+.ch-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;cursor:pointer}
+.ch-card.open .ch-hd{border-bottom:1px solid var(--bdr)}
+.ch-name{display:flex;align-items:center;gap:7px;font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--gold)}
+.tog{width:27px;height:13px;border-radius:9px;background:var(--lift2);border:1px solid var(--bdr);position:relative;cursor:pointer;transition:all .25s;flex-shrink:0}
+.tog.on{background:var(--gold);border-color:var(--gold)}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:7px;height:7px;border-radius:50%;background:var(--txtd);transition:transform .25s,background .25s}
+.tog.on::after{transform:translateX(14px);background:var(--bg)}
+.ch-body{padding:9px 10px;display:none}.ch-card.open .ch-body{display:block}
+.fl{margin-bottom:6px}
+.fl-lbl{font-size:7px;letter-spacing:.26em;color:var(--txtd);margin-bottom:3px;text-transform:uppercase}
+.fl input,.fl select{width:100%;background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:300;padding:4px 7px;outline:none;transition:border-color .2s}
+.fl input:focus{border-color:var(--gold)}.fl input::placeholder{color:var(--txtd)}.fl select option{background:var(--ink)}
+.ch-status{font-size:8px;margin-top:4px;color:var(--txtd);min-height:12px}
+.ch-status.ok{color:var(--sage)}.ch-status.err{color:var(--redb)}
+.btn{width:100%;margin-top:4px;background:none;border:1px solid var(--bdr2);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.26em;padding:5px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn:hover{background:var(--goldg);border-color:var(--bdr3)}.btn.red-btn{border-color:var(--redbdr);color:var(--redb)}
+/* ═══ EMAIL MODULE ═══ */
+.email-form{flex:1;overflow-y:auto;padding:12px}
+.form-section{margin-bottom:12px}
+.form-label{font-size:7px;letter-spacing:.28em;color:var(--txtd);margin-bottom:3px;text-transform:uppercase}
+.form-input{width:100%;background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 8px;outline:none;transition:border-color .2s;resize:vertical}
+.form-input:focus{border-color:var(--gold)}.form-input::placeholder{color:var(--txtd)}
+.verdict-box{margin-top:10px;padding:12px 14px;border:1px solid var(--bdr);background:var(--surface);display:none}
+.verdict-label{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic}
+.verdict-label.SAFE{color:var(--sage)}.verdict-label.SUSPICIOUS{color:var(--amber)}.verdict-label.MALICIOUS{color:var(--redb)}
+.signal-list{margin-top:8px}
+.signal-item{font-size:9px;color:var(--txt);padding:2px 0;border-bottom:1px solid var(--bdr);line-height:1.5}
+/* ═══ IP INTEL ═══ */
+.ip-list{flex:1;overflow-y:auto}
+.ip-card{margin:4px 10px;padding:9px 11px;border:1px solid var(--bdr);background:var(--surface);animation:slideIn .2s ease}
+.ip-card:hover{border-color:var(--bdr2)}
+.ip-score-bar{height:3px;background:var(--bdr);margin-top:6px}
+.ip-score-fill{height:100%;transition:width .5s;background:var(--sage)}
+.ip-score-fill.hi{background:var(--red)}.ip-score-fill.md{background:var(--amber)}
+.geo-tag{font-size:8px;color:var(--ice);margin-top:3px}
+.anon-tag{font-size:7px;padding:1px 5px;border:1px solid;letter-spacing:.1em;display:inline-block;margin-top:3px}
+.anon-TOR{border-color:var(--redbdr);color:var(--redb)}.anon-PROXY{border-color:var(--ambdbr);color:var(--amber)}.anon-VPN{border-color:var(--amber);color:var(--amber)}.anon-RESIDENTIAL{border-color:var(--sagedim);color:var(--sage)}.anon-DATACENTER{border-color:var(--icedim);color:var(--ice)}
+/* ═══ UBA ═══ */
+.uba-list{flex:1;overflow-y:auto;padding:4px 0}
+.uba-card{margin:3px 9px;padding:8px 11px;border:1px solid var(--bdr);background:var(--surface);animation:slideIn .2s ease}
+.uba-card.high-risk{border-left:3px solid var(--red);background:var(--reddim)}
+.uba-card.med-risk{border-left:3px solid var(--amber);background:var(--amberdim)}
+.uba-user{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--gold)}
+.uba-anomaly{font-size:9px;color:var(--txt);margin-top:3px;line-height:1.5}
+.uba-card.high-risk .uba-anomaly{color:rgba(255,180,180,.9)}
+.risk-bar{height:3px;background:var(--bdr);margin-top:5px}.risk-fill{height:100%;background:var(--sage);transition:width .5s}
+/* ═══ SOAR ═══ */
+.soar-list{flex:1;overflow-y:auto;padding:4px 0}
+.soar-card{margin:3px 9px;padding:8px 11px;border:1px solid var(--bdr);background:var(--surface);animation:slideIn .22s ease}
+.soar-action{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic}
+.soar-card[data-color="red"] .soar-action{color:var(--redb)}.soar-card[data-color="amber"] .soar-action{color:var(--amber)}.soar-card[data-color="ice"] .soar-action{color:var(--ice)}
+.soar-card[data-color="red"]{border-left:3px solid var(--red);background:var(--reddim)}
+.soar-card[data-color="amber"]{border-left:3px solid var(--amber);background:var(--amberdim)}
+.soar-meta{font-size:8px;color:var(--txt);margin-top:3px}.soar-auto{font-size:7px;padding:1px 5px;border:1px solid var(--bdr2);color:var(--txtd);display:inline-block;margin-top:4px}
+/* ═══ FILE SCANNER ═══ */
+.dropzone{border:2px dashed var(--bdr2);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s;font-size:9px;color:var(--txtd);letter-spacing:.12em;margin:10px}
+.dropzone:hover,.dropzone.drag{border-color:var(--gold);color:var(--gold)}
+.scan-result{margin:0 10px 8px;padding:10px 12px;border:1px solid var(--bdr);background:var(--surface)}
+.verdict-tag{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:500}
+.verdict-tag.CLEAN{color:var(--sage)}.verdict-tag.SUSPICIOUS{color:var(--amber)}.verdict-tag.MALICIOUS{color:var(--redb)}
+/* ═══ COPILOT ═══ */
+.copilot-wrap{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.copilot-history{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:85%;padding:8px 12px;line-height:1.6}
+.msg.user{align-self:flex-end;background:var(--lift);border:1px solid var(--bdr2);font-size:10px;color:var(--txtb)}
+.msg.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--bdr);border-left:3px solid var(--gold);font-size:9px;color:var(--txt)}
+.msg.bot.err{border-left-color:var(--red);color:var(--redb)}
+.copilot-input-row{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--bdr);flex-shrink:0}
+#copilotInput{flex:1;background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 9px;outline:none;transition:border-color .2s}
+#copilotInput:focus{border-color:var(--gold)}
+#copilotSend{background:none;border:1px solid var(--bdr2);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;padding:6px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+#copilotSend:hover{background:var(--goldg);border-color:var(--bdr3)}
+.copilot-quick{display:flex;gap:4px;flex-wrap:wrap;padding:4px 10px 6px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.quick-btn{font-size:7px;padding:2px 8px;border:1px solid var(--bdr);color:var(--txtd);cursor:pointer;letter-spacing:.09em;background:none;transition:all .2s}
+.quick-btn:hover{border-color:var(--bdr2);color:var(--txt)}
+/* ═══ NOTIF STACK ═══ */
+#notifStack{position:fixed;top:10px;right:12px;z-index:9000;display:flex;flex-direction:column;gap:5px;width:300px;pointer-events:none}
+.nc{background:var(--surface);border:1px solid var(--bdr);border-left:3px solid var(--gold);padding:8px 12px;box-shadow:var(--shadow);animation:notifIn .25s ease;pointer-events:all;cursor:pointer;position:relative;overflow:hidden}
+.nc.t{border-left-color:var(--red)}.nc.w{border-left-color:var(--amber)}.nc.i{border-left-color:var(--sage)}.nc.ai{border-left-color:var(--ice)}
+.nc.out{animation:notifOut .2s ease forwards}
+.nc-prog{position:absolute;bottom:0;left:0;height:2px;background:var(--gold);animation:prog linear forwards}
+.nc.t .nc-prog{background:var(--red)}.nc.w .nc-prog{background:var(--amber)}.nc.i .nc-prog{background:var(--sage)}.nc.ai .nc-prog{background:var(--ice)}
+@keyframes prog{from{width:100%}to{width:0%}}
+.nc-title{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--goldb)}
+.nc.t .nc-title{color:var(--redb)}.nc.w .nc-title{color:var(--amber)}.nc.i .nc-title{color:var(--sage)}.nc.ai .nc-title{color:var(--ice)}
+.nc-body{font-size:8px;color:var(--txt);margin-top:2px;line-height:1.4}
+.nc-dismiss{position:absolute;top:4px;right:6px;font-size:9px;color:var(--txtd);cursor:pointer;padding:2px}
+/* ═══ PROMPT MODAL ═══ */
+#promptOverlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+#promptOverlay.open{display:flex}
+.prompt-box{background:var(--surface);border:1px solid var(--bdr3);width:520px;max-width:92vw;box-shadow:var(--shadow),0 0 50px rgba(255,26,54,.09);animation:slideIn .25s ease}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bdr)}
+.ph-eye{font-size:7px;letter-spacing:.32em;color:var(--txtd);margin-bottom:2px;text-transform:uppercase}
+.ph-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--redb)}
+.ph-close{font-size:16px;color:var(--txtd);cursor:pointer;border:1px solid var(--bdr);width:26px;height:26px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ph-close:hover{border-color:var(--bdr3);color:var(--goldb)}
+.pb{padding:14px 18px}
+.pe-detail{background:var(--lift);border:1px solid var(--bdr);padding:9px 12px;margin-bottom:12px;font-size:9px;line-height:1.8;color:var(--txt)}
+.pe-detail strong{color:var(--redb);font-weight:400}
+.pa-list{display:flex;flex-direction:column;gap:5px}
+.pa{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--bdr);background:var(--lift);cursor:pointer;transition:all .16s}
+.pa:hover{border-color:var(--bdr3);background:var(--lift2)}
+.pa-ic{font-size:14px;width:20px;text-align:center}
+.pa-lbl{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--goldb)}
+.pa-desc{font-size:8px;color:var(--txtd);margin-top:1px}
+.pa-badge{font-size:7px;padding:1px 5px;border:1px solid;letter-spacing:.12em;margin-left:auto}
+.pb-red{border-color:var(--redbdr);color:var(--redb)}.pb-amb{border-color:var(--ambdbr);color:var(--amber)}.pb-sage{border-color:var(--sage);color:var(--sage)}.pb-ice{border-color:var(--ice);color:var(--ice)}
+.pf{padding:8px 18px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between}
+.pf-snooze,.pf-dismiss{font-size:8px;color:var(--txtd);cursor:pointer;letter-spacing:.1em}
+.pf-snooze:hover,.pf-dismiss:hover{color:var(--txt)}
+/* ═══ FOOTER ═══ */
+footer{display:flex;align-items:center;justify-content:space-between;padding:4px 22px;border-top:1px solid var(--bdr);flex-shrink:0}
+.ft-stats{display:flex;gap:18px}
+.ft-item{font-size:8px;color:var(--txtd);display:flex;gap:4px}
+.ft-v{color:var(--golddim)}
+/* ═══ TOAST ═══ */
+#toast{position:fixed;bottom:12px;left:50%;transform:translateX(-50%) translateY(6px);padding:6px 16px;border:1px solid var(--bdr2);background:var(--surface);font-size:9px;color:var(--txt);letter-spacing:.1em;opacity:0;transition:all .22s;pointer-events:none;z-index:5000;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div id="notifStack"></div>
+
+<!-- PROMPT MODAL -->
+<div id="promptOverlay">
+  <div class="prompt-box">
+    <div class="ph">
+      <div><div class="ph-eye">SafeNet AI · Action Required</div><div class="ph-title" id="pTitle">Critical Threat</div></div>
+      <div class="ph-close" onclick="closePrompt()">✕</div>
+    </div>
+    <div class="pb">
+      <div class="pe-detail" id="pDetail"></div>
+      <div class="pa-list">
+        <div class="pa" onclick="promptAct('block')"><div class="pa-ic">🚫</div><div><div class="pa-lbl">Block Source IP</div><div class="pa-desc">Firewall deny + terminate active connections</div></div><span class="pa-badge pb-red">IMMEDIATE</span></div>
+        <div class="pa" onclick="promptAct('escalate')"><div class="pa-ic">📞</div><div><div class="pa-lbl">Escalate — Call & SMS</div><div class="pa-desc">Dispatch all armed channels now</div></div><span class="pa-badge pb-amb">URGENT</span></div>
+        <div class="pa" onclick="promptAct('isolate')"><div class="pa-ic">🛡</div><div><div class="pa-lbl">Isolate Subnet</div><div class="pa-desc">Quarantine segment, start forensic capture</div></div><span class="pa-badge pb-amb">CONTAIN</span></div>
+        <div class="pa" onclick="promptAct('monitor')"><div class="pa-ic">👁</div><div><div class="pa-lbl">Enhanced Monitoring</div><div class="pa-desc">Deep packet inspection on source IP</div></div><span class="pa-badge pb-sage">WATCH</span></div>
+        <div class="pa" onclick="promptAct('report')"><div class="pa-ic">📋</div><div><div class="pa-lbl">Generate Incident Report</div><div class="pa-desc">AI-generated PDF report to email</div></div><span class="pa-badge pb-ice">REPORT</span></div>
+      </div>
+    </div>
+    <div class="pf"><span class="pf-snooze" onclick="snoozePrompt()">⏱ Snooze 10 min</span><span class="pf-dismiss" onclick="closePrompt()">Dismiss</span></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="wm"><div class="crest">✦</div><div>SAFENET AI<div class="wm-sub">Advanced Threat Intelligence Platform v4</div></div></div>
+  <div class="hd-right">
+    <div class="hd-pill"><div class="dot"></div> Live</div>
+    <div class="hd-pill" id="hThreat" style="display:none"><div class="dot r"></div><span id="hThreatCnt" style="color:var(--redb);font-weight:500"></span></div>
+    <span class="threat-badge" id="threatBadge">THREATS</span>
+    <div class="llm-pill" id="llmPill">LLM: checking…</div>
+    <div class="hd-pill" id="notifToggle" onclick="toggleBrowserNotifs()"><div class="dot" id="notifDot" style="background:var(--txtd)"></div> Alerts</div>
+    <div class="tt-wrap" onclick="toggleTheme()"><div class="tt-track"><div class="tt-knob"></div></div><span class="tt-lbl" id="themeLabel">DARK</span></div>
+    <div id="clk">00:00:00</div>
+  </div>
+</header>
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi"><div class="kpi-l">Events</div><div class="kpi-v ice" id="kTotal">0</div><div class="kpi-s">ingested</div></div>
+  <div class="kpi"><div class="kpi-l">Threats</div><div class="kpi-v red" id="kThreats">0</div><div class="kpi-s">detected</div></div>
+  <div class="kpi"><div class="kpi-l">Blocked IPs</div><div class="kpi-v amb" id="kBlocked">0</div><div class="kpi-s">quarantined</div></div>
+  <div class="kpi"><div class="kpi-l">SOAR Actions</div><div class="kpi-v pur" id="kSOAR">0</div><div class="kpi-s">automated</div></div>
+  <div class="kpi"><div class="kpi-l">UBA Alerts</div><div class="kpi-v amb" id="kUBA">0</div><div class="kpi-s">behavior anomalies</div></div>
+  <div class="kpi"><div class="kpi-l">Dispatched</div><div class="kpi-v sage" id="kDispatched">0</div><div class="kpi-s">sms·email·call</div></div>
+  <div class="kpi"><div class="kpi-l">AI Analyses</div><div class="kpi-v" id="kAI">0</div><div class="kpi-s" id="kAIlbl">llm active</div></div>
+</div>
+
+<!-- TAB NAV -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('monitor')">◈ Monitor</button>
+  <button class="tab-btn" onclick="switchTab('email')">✉ Email Analyzer</button>
+  <button class="tab-btn" onclick="switchTab('ip')">🌐 IP Intelligence</button>
+  <button class="tab-btn" onclick="switchTab('uba')">👤 User Behavior</button>
+  <button class="tab-btn" onclick="switchTab('soar')">⚡ SOAR Response</button>
+  <button class="tab-btn" onclick="switchTab('files')">📂 File Scanner</button>
+  <button class="tab-btn" onclick="switchTab('copilot')">🧠 AI Copilot</button>
+  <button class="tab-btn" onclick="switchTab('channels')">🔔 Channels</button>
+</div>
+
+<!-- TAB PANELS -->
+<div class="tab-panels">
+
+  <!-- MONITOR -->
+  <div class="tab-panel active" id="tab-monitor">
+    <div class="grid-3" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Live Event Stream</span><span class="col-meta" id="logMeta">0 events</span></div>
+        <div class="log-thead"><span class="lth">Time</span><span class="lth">Source IP</span><span class="lth">Proto</span><span class="lth">Port</span><span class="lth">Event</span><span class="lth">Status</span></div>
+        <div class="log-feed" id="logFeed"></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Active Alerts</span><span class="col-meta" id="alertMeta">0 alerts</span></div>
+        <div class="alerts-scroll" id="alertsFeed"></div>
+        <div class="ai-box"><div class="ai-head">✦ <span id="aiModelLbl">LLM Analysis</span><span class="ai-cur" id="aiCur"></span></div><div class="ai-txt" id="aiTxt" style="color:var(--txtd);font-style:italic">Awaiting threats…</div></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Channels</span><span class="col-meta">dispatch</span></div>
+        <div class="thresh-row"><span class="thresh-lbl">Alert threshold</span><div class="thresh-btns"><button class="tb" onclick="setThresh('MEDIUM',this)">MED</button><button class="tb active" onclick="setThresh('HIGH',this)">HIGH</button><button class="tb" onclick="setThresh('CRITICAL',this)">CRIT</button></div></div>
+        <div class="cache-row"><span class="cache-lbl">Cache</span><span class="cache-val" id="cacheInfo">0 · 0KB</span><span class="cache-clear" onclick="clearCache()">CLEAR</span></div>
+        <div class="ch-scroll">
+          <div class="ch-card" id="ch-sms"><div class="ch-hd" onclick="toggleCard('sms')"><div class="ch-name">📱 SMS · Twilio</div><div class="tog" id="tog-sms" onclick="event.stopPropagation();toggleCh('sms')"></div></div><div class="ch-body"><div class="fl"><div class="fl-lbl">Account SID</div><input id="sms-sid" type="password" placeholder="ACxxxxxxxxxxxxxxxx"></div><div class="fl"><div class="fl-lbl">Auth Token</div><input id="sms-token" type="password" placeholder="Auth token"></div><div class="fl"><div class="fl-lbl">From</div><input id="sms-from" placeholder="+1XXXXXXXXXX"></div><div class="fl"><div class="fl-lbl">To</div><input id="sms-to" placeholder="+91XXXXXXXXXX"></div><div class="ch-status" id="st-sms">Not configured</div><button class="btn" onclick="testCh('sms')">Test SMS</button></div></div>
+          <div class="ch-card" id="ch-email"><div class="ch-hd" onclick="toggleCard('email')"><div class="ch-name">✉ Email · SendGrid</div><div class="tog" id="tog-email" onclick="event.stopPropagation();toggleCh('email')"></div></div><div class="ch-body"><div class="fl"><div class="fl-lbl">API Key</div><input id="email-key" type="password" placeholder="SG.xxxxxxxxx"></div><div class="fl"><div class="fl-lbl">From</div><input id="email-from" placeholder="alerts@domain.com"></div><div class="fl"><div class="fl-lbl">To</div><input id="email-to" placeholder="security@company.com"></div><div class="ch-status" id="st-email">Not configured</div><button class="btn" onclick="testCh('email')">Test Email</button></div></div>
+          <div class="ch-card" id="ch-call"><div class="ch-hd" onclick="toggleCard('call')"><div class="ch-name">📞 Voice · Twilio</div><div class="tog" id="tog-call" onclick="event.stopPropagation();toggleCh('call')"></div></div><div class="ch-body"><div class="fl"><div class="fl-lbl">Account SID</div><input id="call-sid" type="password" placeholder="ACxxxxxxxxxxxxxxxx"></div><div class="fl"><div class="fl-lbl">Auth Token</div><input id="call-token" type="password" placeholder="Auth token"></div><div class="fl"><div class="fl-lbl">From</div><input id="call-from" placeholder="+1XXXXXXXXXX"></div><div class="fl"><div class="fl-lbl">To</div><input id="call-to" placeholder="+91XXXXXXXXXX"></div><div class="ch-status" id="st-call">Not configured</div><button class="btn" onclick="testCh('call')">Test Call</button></div></div>
+          <div class="ch-card" id="ch-webhook"><div class="ch-hd" onclick="toggleCard('webhook')"><div class="ch-name">⇒ Webhook · SIEM</div><div class="tog" id="tog-webhook" onclick="event.stopPropagation();toggleCh('webhook')"></div></div><div class="ch-body"><div class="fl"><div class="fl-lbl">Endpoint URL</div><input id="wh-url" placeholder="https://siem.company.com/events"></div><div class="fl"><div class="fl-lbl">Token</div><input id="wh-token" type="password" placeholder="Bearer token"></div><div class="ch-status" id="st-webhook">Not configured</div><button class="btn" onclick="testCh('webhook')">Test Webhook</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL ANALYZER -->
+  <div class="tab-panel" id="tab-email">
+    <div class="grid-2" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Email Analysis</span><span class="col-meta">NLP + AI phishing detection</span></div>
+        <div class="email-form">
+          <div class="form-section"><div class="form-label">From (sender)</div><input class="form-input" id="em-from" placeholder="sender@domain.com"></div>
+          <div class="form-section"><div class="form-label">Subject</div><input class="form-input" id="em-subject" placeholder="Email subject line"></div>
+          <div class="form-section"><div class="form-label">Body</div><textarea class="form-input" id="em-body" rows="7" placeholder="Paste email body here…"></textarea></div>
+          <button class="btn" onclick="analyzeEmail()" style="width:100%">▶ Analyze Email</button>
+          <div class="verdict-box" id="verdictBox">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="verdict-label" id="verdictLabel">SAFE</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--golddim)" id="verdictScore">0</span>
+            </div>
+            <div id="verdictLLM" style="font-size:9px;color:var(--txt);margin-top:8px;line-height:1.6;border-top:1px solid var(--bdr);padding-top:6px;display:none"></div>
+            <div class="signal-list" id="signalList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Detection Signals</span><span class="col-meta">NLP indicators</span></div>
+        <div style="flex:1;overflow-y:auto;padding:10px 12px">
+          <div style="font-size:9px;color:var(--txtd);margin-bottom:10px;line-height:1.7">
+            SafeNet AI checks for: urgency phrases, social engineering patterns, sender domain spoofing, typosquatting, SPF/DKIM/DMARC failures, suspicious links, AI-generated content markers, and link text/href mismatches.
+          </div>
+          <div id="emailHistory"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IP INTEL -->
+  <div class="tab-panel" id="tab-ip">
+    <div class="grid-2" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">IP Intelligence</span><span class="col-meta">geo · vpn · tor · reputation</span></div>
+        <div style="padding:8px 10px;border-bottom:1px solid var(--bdr);flex-shrink:0;display:flex;gap:5px">
+          <input id="ipLookup" class="form-input" style="flex:1;height:28px;padding:3px 7px" placeholder="Enter IP address to analyze">
+          <button class="btn" style="width:auto;padding:0 12px;margin:0" onclick="lookupIP()">Lookup</button>
+        </div>
+        <div class="ip-list" id="ipList"></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Threat Blacklist</span><span class="col-meta" id="blMeta">0 blocked</span></div>
+        <div style="padding:5px 9px;border-bottom:1px solid var(--bdr);flex-shrink:0;display:flex;gap:5px">
+          <input id="blInput" class="form-input" style="flex:1;height:26px;padding:2px 7px" placeholder="+IP to blacklist">
+          <button class="btn" style="width:auto;padding:0 10px;margin:0" onclick="addBlacklist()">Block</button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 0" id="blacklistFeed"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UBA -->
+  <div class="tab-panel" id="tab-uba">
+    <div class="grid-2" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Behavior Anomalies</span><span class="col-meta" id="ubaMeta">0 alerts</span></div>
+        <div class="uba-list" id="ubaFeed"></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">User Risk Profiles</span><span class="col-meta">sorted by risk</span></div>
+        <div style="padding:5px 9px;border-bottom:1px solid var(--bdr);flex-shrink:0;display:flex;gap:5px">
+          <button class="btn" style="margin:0" onclick="loadUBA()">↺ Refresh</button>
+          <button class="btn" style="margin:0" onclick="simulateUBA()">⚡ Simulate Events</button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 0" id="ubaProfiles"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOAR -->
+  <div class="tab-panel" id="tab-soar">
+    <div class="grid-2" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">SOAR Audit Log</span><span class="col-meta" id="soarMeta">0 actions</span></div>
+        <div class="soar-list" id="soarFeed"></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Manual Response</span><span class="col-meta">immediate actions</span></div>
+        <div style="padding:10px 12px;overflow-y:auto;flex:1">
+          <div class="fl"><div class="fl-lbl">Target IP / Host</div><input id="soarTarget" placeholder="IP address or hostname"></div>
+          <div class="fl"><div class="fl-lbl">Action</div>
+            <select id="soarAction" class="form-input">
+              <option value="BLOCK_IP">BLOCK_IP — Add to firewall deny list</option>
+              <option value="RATE_LIMIT">RATE_LIMIT — Throttle traffic from source</option>
+              <option value="ISOLATE_HOST">ISOLATE_HOST — Network quarantine</option>
+              <option value="DISABLE_ACCOUNT">DISABLE_ACCOUNT — Lock user account</option>
+              <option value="ALERT_ONLY">ALERT_ONLY — Log and alert, no block</option>
+            </select>
+          </div>
+          <div class="fl"><div class="fl-lbl">Reason</div><input id="soarReason" placeholder="Why is this action needed?"></div>
+          <button class="btn red-btn" onclick="executeSoar()">⚡ Execute Action</button>
+          <div style="margin-top:14px;padding:10px;border:1px solid var(--bdr);background:var(--surface)">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--gold);margin-bottom:6px">Auto-Response Rules Active</div>
+            <div style="font-size:8px;color:var(--txt);line-height:1.9">
+              R001 · C2/RCE CRITICAL → AUTO BLOCK_IP<br>
+              R002 · DDoS/Flood → AUTO RATE_LIMIT<br>
+              R003 · Brute Force HIGH → AUTO BLOCK_IP<br>
+              R004 · Port Scan → ALERT_ONLY<br>
+              R005 · SQL Injection → ALERT_ONLY<br>
+              R006 · SMB Exploit → AUTO ISOLATE_HOST
+            </div>
+          </div>
+          <div id="soarStats" style="margin-top:10px;font-size:9px;color:var(--txtd);line-height:1.8"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILE SCANNER -->
+  <div class="tab-panel" id="tab-files">
+    <div class="grid-2" style="flex:1">
+      <div class="col">
+        <div class="col-hd"><span class="col-title">File Scanner</span><span class="col-meta">malware · entropy · signatures</span></div>
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+          Drop file here or click to upload<br>
+          <span style="font-size:8px;color:var(--txtd);margin-top:4px;display:block">EXE · DLL · PDF · DOCX · JS · PS1 · ZIP · Any file</span>
+        </div>
+        <input type="file" id="fileInput" style="display:none" onchange="scanFile(this.files[0])">
+        <div style="flex:1;overflow-y:auto;padding:0 0 8px" id="scanResults"></div>
+      </div>
+      <div class="col">
+        <div class="col-hd"><span class="col-title">Scan History</span><span class="col-meta">recent results</span></div>
+        <div style="flex:1;overflow-y:auto;padding:4px 0" id="scanHistory"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COPILOT -->
+  <div class="tab-panel" id="tab-copilot">
+    <div class="copilot-wrap">
+      <div style="padding:8px 12px;border-bottom:1px solid var(--bdr);flex-shrink:0;font-size:8px;color:var(--txtd);letter-spacing:.12em">
+        AI SECURITY COPILOT — Ask anything about current threats, logs, or request actions. Strictly cybersecurity focused.
+      </div>
+      <div class="copilot-quick">
+        <button class="quick-btn" onclick="quickAsk('Show me the most critical threats right now')">Critical threats</button>
+        <button class="quick-btn" onclick="quickAsk('Summarize today\'s attack patterns')">Attack summary</button>
+        <button class="quick-btn" onclick="quickAsk('Which IPs should be blocked immediately?')">Block recommendations</button>
+        <button class="quick-btn" onclick="quickAsk('Explain the current anomaly score')">Anomaly score</button>
+        <button class="quick-btn" onclick="quickAsk('What is the most dangerous attack in the last hour?')">Top threat</button>
+        <button class="quick-btn" onclick="quickAsk('Should I escalate to my security team?')">Escalate?</button>
+      </div>
+      <div class="copilot-history" id="copilotHistory">
+        <div class="msg bot">SafeNet AI Copilot online. I analyze only cybersecurity events and threats. Ask me about current attack patterns, suspicious IPs, recommended actions, or anything in the threat logs.</div>
+      </div>
+      <div class="copilot-input-row">
+        <input id="copilotInput" placeholder="Ask about threats, logs, or actions…" onkeydown="if(event.key==='Enter')sendCopilot()">
+        <button id="copilotSend" onclick="sendCopilot()">ASK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANNELS (dedicated tab) -->
+  <div class="tab-panel" id="tab-channels">
+    <div style="flex:1;overflow-y:auto;padding:12px 14px;max-width:600px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold);margin-bottom:12px">Alert Channel Configuration</div>
+      <div style="font-size:9px;color:var(--txtd);line-height:1.7;margin-bottom:14px">Configure Twilio SMS, SendGrid email, voice calls and webhooks. Credentials are sent to the backend on save and used for real dispatch. Toggle each channel on/off in the Monitor tab.</div>
+      <div class="fl"><div class="fl-lbl">Twilio Account SID</div><input id="cfg-sid" type="password" placeholder="ACxxxxxxxxxxxxxxxx"></div>
+      <div class="fl"><div class="fl-lbl">Twilio Auth Token</div><input id="cfg-token" type="password" placeholder="Auth token"></div>
+      <div class="fl"><div class="fl-lbl">Twilio From Number</div><input id="cfg-from" placeholder="+1XXXXXXXXXX"></div>
+      <div class="fl"><div class="fl-lbl">SMS Recipient</div><input id="cfg-sms-to" placeholder="+91XXXXXXXXXX"></div>
+      <div class="fl"><div class="fl-lbl">Call Recipient</div><input id="cfg-call-to" placeholder="+91XXXXXXXXXX"></div>
+      <div class="fl"><div class="fl-lbl">SendGrid API Key</div><input id="cfg-sgkey" type="password" placeholder="SG.xxxxxxxxx"></div>
+      <div class="fl"><div class="fl-lbl">Email From</div><input id="cfg-em-from" placeholder="safenet@domain.com"></div>
+      <div class="fl"><div class="fl-lbl">Email To</div><input id="cfg-em-to" placeholder="security@company.com"></div>
+      <div class="fl"><div class="fl-lbl">LLM Mode</div>
+        <select id="cfg-llm-mode" class="form-input">
+          <option value="auto">Auto (Ollama → Claude fallback)</option>
+          <option value="ollama">Ollama only</option>
+          <option value="claude">Claude only</option>
+        </select>
+      </div>
+      <div class="fl"><div class="fl-lbl">Ollama Model</div><input id="cfg-ollama-model" value="llama3" placeholder="llama3, mistral, phi3…"></div>
+      <div class="fl"><div class="fl-lbl">Anthropic API Key (Claude fallback)</div><input id="cfg-claude-key" type="password" placeholder="sk-ant-xxxxxxxx"></div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <button class="btn" onclick="checkLLM()" style="margin:0">Check LLM Status</button>
+        <button class="btn" onclick="applyChannelConfig()" style="margin:0">Save Configuration</button>
+      </div>
+      <div id="cfgStatus" style="margin-top:8px;font-size:9px;color:var(--txtd)"></div>
+      <div id="llmStatus" style="margin-top:6px;font-size:9px;color:var(--txtd)"></div>
+    </div>
+  </div>
+
+</div><!-- /tab-panels -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-stats">
+    <div class="ft-item">Backend <span class="ft-v" id="fConn" style="color:var(--sage)">connected</span></div>
+    <div class="ft-item">Rate <span class="ft-v" id="fRate">—</span></div>
+    <div class="ft-item">Uptime <span class="ft-v" id="fUptime">00:00</span></div>
+    <div class="ft-item">Cache <span class="ft-v" id="fCache">0</span></div>
+  </div>
+  <div style="font-size:8px;color:var(--txtd);letter-spacing:.14em">SAFENET AI v4.0 · THREAT COMMAND</div>
+</footer>
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  SafeNet AI v4 — Frontend Application
+// ═══════════════════════════════════════════════════════════
+const ST = {
+  total:0,threats:0,blocked:0,dispatched:0,aiCount:0,soarCount:0,ubaCount:0,
+  channels:{sms:false,email:false,call:false,webhook:false},
+  thresh:'HIGH', logCount:0, alertCount:0,
+  promptSnoozed:false, promptSnoozeT:null, lastPrompt:0,
+  currentEvent:null, notifEnabled:false, demoMode:false,
+  startTime:Date.now(), lps:0, lpsLast:Date.now(),
+};
+const SEV={MEDIUM:1,HIGH:2,CRITICAL:3};
+
+// ── Socket ────────────────────────────────────────────────
+let socket;
+function initSocket(){
+  socket=io(window.location.origin,{transports:['websocket','polling'],reconnectionAttempts:8,reconnectionDelay:2000});
+  socket.on('connect',()=>{set('fConn','connected','sage')});
+  socket.on('disconnect',()=>{set('fConn','reconnecting…','amber')});
+  socket.on('connect_error',()=>{
+    set('fConn','offline','red');
+    if(!ST.demoMode){ST.demoMode=true;startDemo();toast('Demo mode — backend offline');}
+  });
+  socket.on('state_sync',   d => onSync(d));
+  socket.on('log_event',    d => addLog(d));
+  socket.on('threat_alert', d => addAlert(d));
+  socket.on('stats_update', d => updateKPIs(d));
+  socket.on('ai_thinking',  () => aiThinking());
+  socket.on('ai_result',    d => aiResult(d));
+  socket.on('dispatch_confirmed', d => markDispatched(d.channels));
+  socket.on('soar_executed', d => addSoarEntry(d));
+  socket.on('uba_alert',    d => addUBACard(d));
+  socket.on('cache_cleared', () => toast('Cache cleared'));
+}
+
+function onSync(d){
+  updateKPIs(d);
+  ST.thresh=d.thresh||'HIGH';
+  ST.channels=d.channels||ST.channels;
+  if(d.recent) d.recent.slice(-25).forEach(e=>addLog(e,false));
+}
+function updateKPIs(d){
+  ST.total=d.total||0; ST.threats=d.threats||0; ST.blocked=d.blocked||0;
+  ST.dispatched=d.dispatched||0; ST.aiCount=d.ai_count||0;
+  g('kTotal').textContent=ST.total.toLocaleString();
+  g('kThreats').textContent=ST.threats;
+  g('kBlocked').textContent=ST.blocked;
+  g('kDispatched').textContent=ST.dispatched;
+  g('kAI').textContent=ST.aiCount;
+  g('cacheInfo').textContent=`${d.cache_count||0} · ${d.cache_kb||0}KB`;
+  g('fCache').textContent=d.cache_count||0;
+  if(ST.threats>0){
+    g('threatBadge').textContent=`${ST.threats} THREATS`; g('threatBadge').classList.add('show');
+    g('hThreatCnt').textContent=`${ST.threats} active`; g('hThreat').style.display='flex';
+  }
+}
+
+// ── Log rows ─────────────────────────────────────────────
+function addLog(e, scroll=true){
+  ST.logCount++;
+  const f=g('logFeed'), r=document.createElement('div');
+  r.className=`log-row ${e.level||''}`;
+  const b=e.is_attack
+    ?(e.sev==='CRITICAL'?`<span class="lr-badge b-crit">CRIT</span>`:`<span class="lr-badge b-warn">${e.sev}</span>`)
+    :`<span class="lr-badge b-ok">CLEAN</span>`;
+  r.innerHTML=`<span class="lr-time">${e.t}</span><span class="lr-ip">${e.ip}</span><span class="lr-p">${e.p}</span><span class="lr-port">${e.port||'—'}</span><span class="lr-msg">${e.m||e.msg}</span>${b}`;
+  f.appendChild(r);
+  while(f.children.length>160)f.removeChild(f.firstChild);
+  if(scroll)f.scrollTop=f.scrollHeight;
+  g('logMeta').textContent=`${ST.logCount} events`;
+}
+
+// ── Alert cards ──────────────────────────────────────────
+function addAlert(e){
+  ST.alertCount++;
+  const cls=e.sev==='CRITICAL'?'crit':e.sev==='HIGH'?'high':'med';
+  const f=g('alertsFeed'), d=document.createElement('div');
+  d.className=`alert-item ${cls}`; d.id=`al-${ST.alertCount}`;
+  d.onclick=()=>openPrompt(e);
+  d.innerHTML=`<div style="display:flex;justify-content:space-between"><span class="ai-type">${e.type}</span><span class="ai-sev">${e.sev}</span></div><div class="ai-msg">${e.m||e.msg}</div><div class="ai-ip">${e.ip} → ${e.dest||'—'}</div><div class="ai-ts">${e.t}</div><div class="dp-row" id="dpr-${ST.alertCount}"></div>`;
+  f.insertBefore(d,f.firstChild);
+  while(f.children.length>24)f.removeChild(f.lastChild);
+  g('alertMeta').textContent=`${ST.alertCount} alerts`;
+  pushNotif(e,ST.alertCount);
+  if(ST.notifEnabled&&SEV[e.sev]>=2)browserNotif(e);
+  if(e.sev==='CRITICAL'&&!ST.promptSnoozed&&Date.now()-ST.lastPrompt>15000){ST.lastPrompt=Date.now();setTimeout(()=>openPrompt(e),500);}
+}
+function markDispatched(channels){
+  const id=ST.alertCount; const r=g(`dpr-${id}`); if(!r)return;
+  const lbl={sms:'SMS',email:'MAIL',call:'CALL',webhook:'HOOK'};
+  const cl={sms:'dp-s',email:'dp-e',call:'dp-c',webhook:'dp-w'};
+  r.innerHTML=(channels||[]).map(ch=>`<span class="dp ${cl[ch]||''} sent">${lbl[ch]||ch}</span>`).join('');
+}
+
+// ── AI box ────────────────────────────────────────────────
+function aiThinking(){g('aiCur').classList.add('on');const t=g('aiTxt');t.style.fontStyle='italic';t.style.color='var(--txtd)';t.textContent='Analysing threats with LLM…';}
+function aiResult(d){g('aiCur').classList.remove('on');const t=g('aiTxt');t.style.fontStyle='normal';t.style.color='var(--txt)';t.textContent=d.text||'Analysis complete.';g('kAI').textContent=d.count||ST.aiCount;}
+
+// ── Notification cards ────────────────────────────────────
+function pushNotif(e,id){
+  const cls=e.sev==='CRITICAL'?'t':e.sev==='HIGH'?'w':'i';
+  const dur=e.sev==='CRITICAL'?8000:e.sev==='HIGH'?5500:3500;
+  const s=g('notifStack'), d=document.createElement('div');
+  d.id=`nc-${id}`; d.className=`nc ${cls}`;
+  d.innerHTML=`<span class="nc-dismiss" onclick="dismissNotif('nc-${id}')">✕</span><div class="nc-title">${e.type}</div><div class="nc-body">${(e.m||e.msg||'').slice(0,80)}</div><div class="nc-prog" style="animation-duration:${dur}ms"></div>`;
+  d.onclick=ev=>{if(!ev.target.classList.contains('nc-dismiss'))openPrompt(e);};
+  s.appendChild(d);
+  while(s.children.length>4)dismissNotif(s.firstChild.id);
+  setTimeout(()=>dismissNotif(`nc-${id}`),dur);
+}
+function dismissNotif(id){const el=g(id);if(!el)return;el.classList.add('out');setTimeout(()=>el.remove(),220);}
+function browserNotif(e){if(Notification.permission==='granted')new Notification(`⚠ ${e.type} — SafeNet AI`,{body:`${e.sev}: ${(e.m||e.msg||'').slice(0,100)}\nSrc: ${e.ip}`,tag:'safenet'});}
+function toggleBrowserNotifs(){
+  const btn=g('notifToggle'),dot=g('notifDot');
+  if(!ST.notifEnabled&&'Notification' in window){
+    Notification.requestPermission().then(p=>{if(p==='granted'){ST.notifEnabled=true;btn.classList.add('on');dot.style.background='var(--sage)';dot.style.boxShadow='0 0 5px var(--sage)';dot.style.animation='pulseA 2s infinite';toast('Browser alerts enabled');}else toast('Permission denied');});
+  }else{ST.notifEnabled=false;btn.classList.remove('on');dot.style.background='var(--txtd)';dot.style.boxShadow='none';toast('Browser alerts disabled');}
+}
+
+// ── Prompt modal ──────────────────────────────────────────
+function openPrompt(e){
+  ST.currentEvent=e;
+  g('pTitle').textContent=`${e.type} — ${e.sev}`;
+  g('pDetail').innerHTML=`<strong>Source:</strong> ${e.ip} → ${e.dest||'—'}<br><strong>Protocol:</strong> ${e.p} :${e.port||'—'}<br><strong>Event:</strong> ${e.m||e.msg}<br><strong>Time:</strong> ${e.t}<br><strong>Severity:</strong> <strong>${e.sev}</strong>`;
+  g('promptOverlay').classList.add('open');
+}
+function closePrompt(){g('promptOverlay').classList.remove('open');ST.currentEvent=null;}
+function snoozePrompt(){ST.promptSnoozed=true;clearTimeout(ST.promptSnoozeT);ST.promptSnoozeT=setTimeout(()=>{ST.promptSnoozed=false;},600000);closePrompt();toast('Critical prompts snoozed 10 min');}
+async function promptAct(action){
+  const labels={block:'IP blocked',escalate:'Escalating all channels…',isolate:'Isolation initiated',monitor:'Added to watchlist',report:'Report queued'};
+  toast(labels[action]);
+  if(action==='block'&&ST.currentEvent){
+    await fetch('/api/intel/blacklist/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ip:ST.currentEvent.ip})}).catch(()=>{});
+  }
+  if(action==='escalate'&&ST.currentEvent){
+    await fetch('/api/channels/dispatch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event:ST.currentEvent})}).catch(()=>{});
+  }
+  closePrompt();
+}
+
+// ── Email analyzer ────────────────────────────────────────
+async function analyzeEmail(){
+  const from=g('em-from').value,subject=g('em-subject').value,body=g('em-body').value;
+  if(!from&&!subject&&!body){toast('Enter email details',true);return;}
+  toast('Analyzing email…');
+  try{
+    const res=await fetch('/api/intel/email/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:from,subject,body})});
+    const d=await res.json();
+    const vb=g('verdictBox'); vb.style.display='block';
+    const vl=g('verdictLabel'); vl.textContent=d.verdict; vl.className=`verdict-label ${d.verdict}`;
+    g('verdictScore').textContent=d.score;
+    const llmEl=g('verdictLLM');
+    if(d.llm_analysis){llmEl.textContent=d.llm_analysis;llmEl.style.display='block';}else{llmEl.style.display='none';}
+    const sl=g('signalList'); sl.innerHTML=(d.signals||[]).map(s=>`<div class="signal-item">⚠ ${s}</div>`).join('')||'<div class="signal-item" style="color:var(--sage)">No suspicious signals detected</div>';
+    // Add to history
+    const h=g('emailHistory');
+    const hCard=document.createElement('div');
+    hCard.style.cssText='margin-bottom:6px;padding:8px 10px;border:1px solid var(--bdr);background:var(--surface);font-size:9px;animation:slideIn .2s';
+    hCard.innerHTML=`<div style="display:flex;justify-content:space-between"><span style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:13px" class="verdict-label ${d.verdict}">${d.verdict}</span><span style="color:var(--txtd)">${new Date().toTimeString().slice(0,8)}</span></div><div style="color:var(--txt);margin-top:3px">${(from||'?').slice(0,40)}</div><div style="color:var(--txtd);margin-top:2px">${(subject||'(no subject)').slice(0,50)}</div>`;
+    h.insertBefore(hCard,h.firstChild);
+  }catch(e){toast('Backend offline — demo mode',true);}
+}
+
+// ── IP Intelligence ───────────────────────────────────────
+async function lookupIP(){
+  const ip=g('ipLookup').value.trim(); if(!ip){toast('Enter IP address',true);return;}
+  toast(`Looking up ${ip}…`);
+  try{
+    const res=await fetch(`/api/intel/ip/${ip}`);
+    const d=await res.json(); addIPCard(d); g('ipLookup').value='';
+  }catch(e){
+    // Demo fallback
+    addIPCard({ip,geo:{country:'Unknown',city:'',isp:'Demo mode'},tor:false,vpn:false,proxy:false,anonymity_score:~~(Math.random()*100),anonymity_label:'RESIDENTIAL',reputation:{score:~~(Math.random()*100),label:'SUSPICIOUS',reasons:['Demo mode — backend offline']}});
+  }
+}
+function addIPCard(d){
+  const f=g('ipList'), c=document.createElement('div');
+  c.className='ip-card';
+  const score=d.reputation?.score||d.anonymity_score||0;
+  const fill=score>=70?'hi':score>=40?'md':'';
+  const geo=d.geo||{};
+  c.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="color:var(--ice);font-size:11px">${d.ip}</span>
+      <span class="anon-tag anon-${d.anonymity_label?.replace(/\s/g,'_')||'RESIDENTIAL'}">${d.anonymity_label||'RESIDENTIAL'}</span>
+    </div>
+    <div class="geo-tag">${geo.country||'?'} · ${geo.city||''} · ${geo.isp||''}</div>
+    <div style="display:flex;gap:6px;margin-top:4px;font-size:8px;color:var(--txtd)">
+      ${d.tor?'<span style="color:var(--redb)">TOR</span>':''}
+      ${d.vpn?'<span style="color:var(--amber)">VPN</span>':''}
+      ${d.proxy?'<span style="color:var(--amber)">PROXY</span>':''}
+      <span>Rep: ${d.reputation?.label||'?'}</span>
+    </div>
+    <div class="ip-score-bar"><div class="ip-score-fill ${fill}" style="width:${score}%"></div></div>
+    <div style="font-size:7px;color:var(--txtd);margin-top:2px">${(d.reputation?.reasons||[]).join(' · ').slice(0,80)}</div>`;
+  f.insertBefore(c,f.firstChild);
+  while(f.children.length>20)f.removeChild(f.lastChild);
+}
+async function addBlacklist(){
+  const ip=g('blInput').value.trim(); if(!ip)return;
+  try{await fetch('/api/intel/blacklist/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ip})});}catch(e){}
+  loadBlacklist(); g('blInput').value=''; toast(`${ip} blacklisted`);
+}
+async function loadBlacklist(){
+  try{
+    const res=await fetch('/api/intel/blacklist'); const d=await res.json();
+    const f=g('blacklistFeed'); f.innerHTML='';
+    g('blMeta').textContent=`${(d.ips||[]).length} blocked`;
+    (d.ips||[]).slice().reverse().forEach(ip=>{
+      const r=document.createElement('div');
+      r.style.cssText='display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--bdr);font-size:9px;align-items:center';
+      r.innerHTML=`<span style="color:var(--redb)">${ip}</span><span style="color:var(--txtd);font-size:7px;cursor:pointer;border:1px solid var(--bdr);padding:1px 5px" onclick="unblockIP('${ip}')">UNBLOCK</span>`;
+      f.appendChild(r);
+    });
+  }catch(e){g('blacklistFeed').innerHTML='<div style="padding:10px;font-size:9px;color:var(--txtd)">Backend offline</div>';}
+}
+async function unblockIP(ip){
+  try{await fetch(`/api/intel/blacklist/${ip}`,{method:'DELETE'});}catch(e){}
+  loadBlacklist(); toast(`${ip} unblocked`);
+}
+
+// ── UBA ───────────────────────────────────────────────────
+async function loadUBA(){
+  try{
+    const [alerts,profiles]=await Promise.all([fetch('/api/intel/uba/alerts').then(r=>r.json()),fetch('/api/intel/uba/risks').then(r=>r.json())]);
+    const f=g('ubaFeed'); f.innerHTML='';
+    g('ubaMeta').textContent=`${alerts.length} alerts`; g('kUBA').textContent=alerts.length;
+    alerts.slice().reverse().slice(0,30).forEach(a=>{
+      const c=document.createElement('div'); c.className=`uba-card ${a.severity==='HIGH'?'high-risk':'med-risk'}`;
+      c.innerHTML=`<div style="display:flex;justify-content:space-between"><span class="uba-user">${a.user_id}</span><span style="font-size:7px;color:var(--txtd)">${a.severity}</span></div><div class="uba-anomaly">${a.anomaly}</div><div style="font-size:8px;color:var(--txtd);margin-top:2px">${a.datetime?.slice(11,19)||''}</div>${a.llm_analysis?`<div style="font-size:8px;color:var(--txt);margin-top:5px;padding-top:5px;border-top:1px solid var(--bdr)">${a.llm_analysis}</div>`:''}`;
+      f.appendChild(c);
+    });
+    const pf=g('ubaProfiles'); pf.innerHTML='';
+    (profiles||[]).sort((a,b)=>b.risk-a.risk).slice(0,15).forEach(p=>{
+      const c=document.createElement('div'); c.style.cssText='margin:3px 9px;padding:8px 11px;border:1px solid var(--bdr);background:var(--surface)';
+      c.innerHTML=`<div style="display:flex;justify-content:space-between"><span style="color:var(--gold);font-size:10px">${p.user_id}</span><span style="font-size:9px;color:${p.risk>=70?'var(--redb)':p.risk>=40?'var(--amber)':'var(--sage)'}">${p.risk}</span></div><div class="risk-bar"><div class="risk-fill" style="width:${p.risk}%;background:${p.risk>=70?'var(--red)':p.risk>=40?'var(--amber)':'var(--sage)'}"></div></div><div style="font-size:8px;color:var(--txtd);margin-top:3px">${(p.flags||[]).slice(0,2).join(' · ')||'No anomalies'}</div>`;
+      pf.appendChild(c);
+    });
+  }catch(e){g('ubaFeed').innerHTML='<div style="padding:12px;font-size:9px;color:var(--txtd)">Backend offline — demo data only</div>';}
+}
+function addUBACard(a){
+  ST.ubaCount++; g('kUBA').textContent=ST.ubaCount;
+  const f=g('ubaFeed'), c=document.createElement('div');
+  c.className=`uba-card ${a.severity==='HIGH'?'high-risk':'med-risk'}`;
+  c.innerHTML=`<div style="display:flex;justify-content:space-between"><span class="uba-user">${a.user_id}</span><span style="font-size:7px;color:var(--txtd)">${a.severity}</span></div><div class="uba-anomaly">${a.anomaly}</div><div style="font-size:8px;color:var(--txtd);margin-top:2px">${new Date().toTimeString().slice(0,8)}</div>`;
+  f.insertBefore(c,f.firstChild);
+  while(f.children.length>30)f.removeChild(f.lastChild);
+  g('ubaMeta').textContent=`${f.children.length} alerts`;
+  pushNotif({type:'UBA ANOMALY',sev:a.severity,m:a.anomaly,ip:a.user_id,t:new Date().toTimeString().slice(0,8)},`uba-${ST.ubaCount}`);
+}
+async function simulateUBA(){
+  try{await fetch('/api/intel/uba/simulate',{method:'POST'});}catch(e){}
+  setTimeout(loadUBA,2000); toast('Simulating 30 UBA events…');
+}
+
+// ── SOAR ─────────────────────────────────────────────────
+function addSoarEntry(d){
+  ST.soarCount++; g('kSOAR').textContent=ST.soarCount;
+  const f=g('soarFeed'), c=document.createElement('div');
+  c.className='soar-card'; c.setAttribute('data-color',d.color||'ice');
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span class="soar-action">${d.action}</span><span class="soar-auto">${d.auto?'AUTO':'MANUAL'}</span></div><div class="soar-meta">Target: ${d.target} · ${d.reason?.slice(0,60)}</div>${d.llm_note?`<div style="font-size:8px;color:var(--txt);margin-top:4px;padding-top:4px;border-top:1px solid var(--bdr)">${d.llm_note}</div>`:''}<div style="font-size:7px;color:var(--txtd);margin-top:3px">${d.datetime?.slice(11,19)||''}</div>`;
+  f.insertBefore(c,f.firstChild);
+  while(f.children.length>50)f.removeChild(f.lastChild);
+  g('soarMeta').textContent=`${f.children.length} actions`;
+}
+async function executeSoar(){
+  const action=g('soarAction').value,target=g('soarTarget').value.trim(),reason=g('soarReason').value.trim();
+  if(!target){toast('Enter target IP or host',true);return;}
+  try{
+    const res=await fetch('/api/intel/soar/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,target,reason:reason||'manual dashboard action'})});
+    const d=await res.json(); addSoarEntry(d);
+  }catch(e){addSoarEntry({action,target,reason,auto:false,color:action.includes('BLOCK')||action.includes('ISOLATE')?'red':'ice',datetime:new Date().toISOString()});}
+  toast(`${action} executed → ${target}`); g('soarTarget').value=''; g('soarReason').value='';
+  loadSOARStats();
+}
+async function loadSOARStats(){
+  try{const res=await fetch('/api/intel/soar/stats');const d=await res.json();g('soarStats').textContent=`Total: ${d.total_actions} · Auto: ${d.auto_actions} · Manual: ${d.manual_actions} · Blocked: ${d.blocked_ips} · Rate-limited: ${d.rate_limited}`;}catch(e){}
+}
+
+// ── File scanner ──────────────────────────────────────────
+function handleDrop(ev){
+  ev.preventDefault(); g('dropzone').classList.remove('drag');
+  const f=ev.dataTransfer.files[0]; if(f)scanFile(f);
+}
+async function scanFile(file){
+  if(!file)return; toast(`Scanning ${file.name}…`);
+  const fd=new FormData(); fd.append('file',file);
+  try{
+    const res=await fetch('/api/intel/files/scan',{method:'POST',body:fd});
+    const d=await res.json(); showScanResult(d);
+  }catch(e){
+    // Demo fallback
+    showScanResult({filename:file.name,filetype:file.name.split('.').pop(),size_kb:(file.size/1024).toFixed(1),score:~~(Math.random()*100),verdict:Math.random()<0.3?'MALICIOUS':Math.random()<0.5?'SUSPICIOUS':'CLEAN',indicators:Math.random()<0.4?['Suspicious extension','High entropy: 7.4']:[],entropy:(Math.random()*8).toFixed(3),md5:'demo-mode-hash',sha256:'demo-mode-sha256…',llm_analysis:null,scan_time_ms:12});
+  }
+}
+function showScanResult(d){
+  const c=document.createElement('div'); c.className='scan-result';
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span class="verdict-tag ${d.verdict}">${d.verdict}</span><span style="font-size:8px;color:var(--txtd)">${d.scan_time_ms}ms</span></div><div style="font-size:9px;color:var(--ice);margin-top:4px">${d.filename}</div><div style="font-size:8px;color:var(--txtd);margin-top:2px">Type: ${d.filetype} · Size: ${d.size_kb}KB · Entropy: ${d.entropy}</div><div style="font-size:8px;color:var(--txtd);margin-top:2px">MD5: ${d.md5}</div>${(d.indicators||[]).map(i=>`<div style="font-size:9px;color:var(--amber);margin-top:3px">⚠ ${i}</div>`).join('')}${d.llm_analysis?`<div style="font-size:9px;color:var(--txt);margin-top:6px;padding-top:5px;border-top:1px solid var(--bdr)">${d.llm_analysis}</div>`:''}`;
+  const f=g('scanResults'); f.insertBefore(c,f.firstChild);
+  // Add to history tab
+  const h=g('scanHistory'), hc=document.createElement('div');
+  hc.style.cssText='margin:3px 9px;padding:7px 10px;border:1px solid var(--bdr);background:var(--surface);font-size:9px;animation:slideIn .2s';
+  hc.innerHTML=`<div style="display:flex;justify-content:space-between"><span class="verdict-tag ${d.verdict}" style="font-size:12px">${d.verdict}</span><span style="color:var(--txtd)">${new Date().toTimeString().slice(0,8)}</span></div><div style="color:var(--txt);margin-top:2px">${d.filename}</div><div style="color:var(--txtd);margin-top:1px">${d.size_kb}KB · Entropy ${d.entropy}</div>`;
+  h.insertBefore(hc,h.firstChild);
+}
+
+// ── AI Copilot ────────────────────────────────────────────
+async function sendCopilot(){
+  const inp=g('copilotInput'), q=inp.value.trim(); if(!q)return;
+  inp.value=''; addCopilotMsg(q,'user');
+  const thinking=addCopilotMsg('Analyzing…','bot');
+  try{
+    const res=await fetch('/api/intel/copilot/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
+    const d=await res.json();
+    thinking.textContent=d.ok?d.response:`Error: ${d.error}`;
+    thinking.className=`msg ${d.ok?'bot':'bot err'}`;
+  }catch(e){
+    // Demo fallback — call Claude directly
+    try{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:'You are SafeNet AI, a cybersecurity analyst. Answer only cybersecurity questions. Be concise.',messages:[{role:'user',content:`Security context: ${ST.threats} active threats, ${ST.blocked} blocked IPs. Question: ${q}`}]})});
+      const d=await r.json(); thinking.textContent=d.content?.[0]?.text||'Analysis unavailable.'; thinking.className='msg bot';
+    }catch(e2){thinking.textContent='Both LLM backends offline. Check Ollama (ollama serve) or set ANTHROPIC_API_KEY.';thinking.className='msg bot err';}
+  }
+  g('copilotHistory').scrollTop=g('copilotHistory').scrollHeight;
+}
+function addCopilotMsg(text,role){
+  const d=document.createElement('div'); d.className=`msg ${role}`; d.textContent=text;
+  g('copilotHistory').appendChild(d);
+  g('copilotHistory').scrollTop=g('copilotHistory').scrollHeight;
+  return d;
+}
+function quickAsk(q){g('copilotInput').value=q;sendCopilot();}
+
+// ── Channel controls ──────────────────────────────────────
+function toggleCard(ch){g(`ch-${ch}`).classList.toggle('open');}
+function toggleCh(ch){
+  const tog=g(`tog-${ch}`), on=tog.classList.toggle('on');
+  g(`ch-${ch}`).classList.toggle('on',on);
+  ST.channels[ch]=on;
+  if(socket?.connected)socket.emit('toggle_channel',{channel:ch,enabled:on});
+  const s=g(`st-${ch}`); s.textContent=on?'● Routing live':'Not configured'; s.className=`ch-status ${on?'ok':''}`;
+  toast(`${ch.toUpperCase()} ${on?'enabled':'disabled'}`);
+}
+async function testCh(ch){
+  const s=g(`st-${ch}`); s.textContent=`Testing ${ch}…`; s.className='ch-status';
+  try{const r=await fetch('/api/channels/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({channel:ch})});const d=await r.json();s.textContent=d.ok?`✓ ${d.msg}`:`✗ ${d.error}`;s.className=`ch-status ${d.ok?'ok':'err'}`;toast(d.ok?`${ch} test ✓`:`${ch} failed: ${d.error}`,!d.ok);}
+  catch(e){s.textContent='✗ Backend offline';s.className='ch-status err';}
+}
+function setThresh(v,btn){
+  ST.thresh=v;
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active','rt'));
+  btn.classList.add('active'); if(v==='CRITICAL')btn.classList.add('rt');
+  if(socket?.connected)socket.emit('set_threshold',{thresh:v});
+  toast(`Threshold: ${v}`);
+}
+function clearCache(){if(socket?.connected)socket.emit('clear_cache',{});toast('Cache cleared');}
+
+async function checkLLM(){
+  const s=g('llmStatus'),p=g('llmPill');
+  s.textContent='Checking LLM…';
+  try{const r=await fetch('/api/analysis/status');const d=await r.json();
+    if(d.lmstudio){p.textContent=`LLM: LM Studio ✓`;p.className='llm-pill ok';g('aiModelLbl').textContent=`LM Studio (${d.lmstudio_model||'?'})`;s.textContent=`LM Studio online · Model: ${d.lmstudio_model}`;}
+    else if(d.ollama){p.textContent=`LLM: Ollama ✓`;p.className='llm-pill ok';g('aiModelLbl').textContent=`Ollama (${d.ollama_models?.[0]||'?'})`;s.textContent=`Ollama online · Models: ${(d.ollama_models||[]).join(', ')}`;}
+    else if(d.claude){p.textContent='LLM: Claude ✓';p.className='llm-pill ok';s.textContent='Claude API active (LM Studio/Ollama offline)';}
+    else{p.textContent='LLM: offline';p.className='llm-pill err';s.textContent='No LLM backend — check LM Studio/Ollama or set ANTHROPIC_API_KEY';}
+  }catch(e){p.textContent='LLM: error';p.className='llm-pill err';s.textContent='Backend offline';}
+}
+async function applyChannelConfig(){
+  const model=g('cfg-ollama-model').value.trim();
+  if(model){try{await fetch('/api/analysis/set-model',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model})});}catch(e){}}
+  g('cfgStatus').textContent='✓ Configuration saved — restart backend to apply API key changes';g('cfgStatus').style.color='var(--sage)';
+  toast('Configuration saved');
+}
+
+// ── Theme & UI ────────────────────────────────────────────
+function toggleTheme(){const h=document.documentElement;const dark=h.dataset.theme==='dark';h.dataset.theme=dark?'light':'dark';g('themeLabel').textContent=dark?'LIGHT':'DARK';}
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  g(`tab-${name}`).classList.add('active');
+  if(name==='ip')loadBlacklist();
+  if(name==='uba')loadUBA();
+  if(name==='soar')loadSOARStats();
+}
+function set(id,txt,color){const el=g(id);el.textContent=txt;if(color)el.style.color=`var(--${color})`;}
+
+// ── Helpers ───────────────────────────────────────────────
+function g(id){return document.getElementById(id);}
+let toastT;
+function toast(msg,red=false){const el=g('toast');el.textContent=msg;el.className='show';el.style.borderColor=red?'var(--redbdr)':'var(--bdr2)';el.style.color=red?'var(--redb)':'var(--txt)';clearTimeout(toastT);toastT=setTimeout(()=>{el.className='';},2700);}
+
+// ── Clock + uptime ────────────────────────────────────────
+setInterval(()=>{
+  g('clk').textContent=new Date().toTimeString().slice(0,8);
+  const s=Math.floor((Date.now()-ST.startTime)/1000);
+  g('fUptime').textContent=`${String(~~(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  ST.lps=0; ST.lpsLast=Date.now();
+},1000);
+
+// ── Demo mode ─────────────────────────────────────────────
+const DATK=[{p:'TCP',port:22,sev:'HIGH',type:'BRUTE FORCE',m:'SSH brute force — 847 consecutive failures'},{p:'TCP',port:80,sev:'CRITICAL',type:'DDoS FLOOD',m:'HTTP flood — 12,400 req/s sustained'},{p:'TCP',port:3306,sev:'HIGH',type:'SQL INJECTION',m:'UNION SELECT bypass on /login'},{p:'TCP',port:4444,sev:'CRITICAL',type:'C2 BEACON',m:'Reverse shell to known C2 infrastructure'},{p:'TCP',port:8080,sev:'CRITICAL',type:'RCE ATTEMPT',m:'Remote code exec via X-Forwarded-For'}];
+const DNORM=[{p:'TCP',port:443,m:'HTTPS session'},{p:'UDP',port:53,m:'DNS query'},{p:'ICMP',port:0,m:'Echo request'}];
+const DATKERS=['185.220.101.34','91.108.4.81','194.165.16.22','77.88.55.99'];
+let dT=0,dTot=0,dBlk=new Set();
+function startDemo(){
+  setInterval(()=>{
+    const n=~~(Math.random()*3)+1;
+    for(let i=0;i<n;i++){
+      const atk=Math.random()<0.11;
+      const t=new Date().toTimeString().slice(0,8);
+      if(atk){
+        const a=DATK[~~(Math.random()*DATK.length)];
+        const e={t,ip:DATKERS[~~(Math.random()*DATKERS.length)],dest:`10.0.0.${~~(Math.random()*253)+1}`,p:a.p,port:a.port,m:a.m,sev:a.sev,type:a.type,is_attack:true,level:a.sev==='CRITICAL'?'is-threat':'is-warn'};
+        dT++;dBlk.add(e.ip);addLog(e);addAlert(e);
+      }else{
+        const n2=DNORM[~~(Math.random()*DNORM.length)];
+        addLog({t,ip:`10.0.0.${~~(Math.random()*50)+1}`,dest:'10.0.0.1',p:n2.p,port:n2.port,m:n2.m,sev:'OK',type:'NORMAL',is_attack:false,level:''});
+      }
+      dTot++;
+    }
+    updateKPIs({total:dTot,threats:dT,blocked:dBlk.size,dispatched:0,ai_count:0,cache_count:Math.min(dTot,500),cache_kb:parseFloat((Math.min(dTot,500)*0.35).toFixed(1))});
+    g('fRate').textContent=`${n*4} events/s`;
+  },250);
+}
+
+// ── Boot ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  initSocket();
+  setTimeout(checkLLM,1500);
+  setTimeout(()=>pushNotif({type:'SafeNet AI v4 Online',sev:'OK',m:'All modules active. Configure channels and connect your local LLM.',ip:'system',t:new Date().toTimeString().slice(0,8)},'boot'),900);
+});
+</script>
+</body>
+</html>

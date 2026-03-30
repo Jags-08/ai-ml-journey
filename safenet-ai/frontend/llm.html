@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SafeNet AI — LLM Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+[data-theme="dark"]{--bg:#07070a;--ink:#0e0e13;--surface:#12121a;--lift:#1a1a26;--lift2:#21212f;--bdr:rgba(201,168,76,.09);--bdr2:rgba(201,168,76,.2);--bdr3:rgba(201,168,76,.4);--gold:#c9a84c;--goldb:#e8d5a3;--golddim:rgba(201,168,76,.35);--goldg:rgba(201,168,76,.07);--red:#ff1a36;--redb:#ff3352;--reddim:rgba(255,26,54,.12);--redbdr:rgba(255,26,54,.38);--amber:#e08820;--amberdim:rgba(224,136,32,.11);--sage:#3db87a;--sagedim:rgba(61,184,122,.1);--ice:#4a9eff;--icedim:rgba(74,158,255,.1);--purple:#a855f7;--txt:rgba(232,213,163,.62);--txtb:#e8d5a3;--txtd:rgba(201,168,76,.24);--shadow:0 4px 28px rgba(0,0,0,.58)}
+[data-theme="light"]{--bg:#f5f1e8;--ink:#ede8db;--surface:#e6e0d0;--lift:#dbd4c0;--lift2:#cfc7b0;--bdr:rgba(100,75,20,.12);--bdr2:rgba(100,75,20,.24);--bdr3:rgba(100,75,20,.42);--gold:#7a5208;--goldb:#4a2e00;--golddim:rgba(100,75,20,.4);--goldg:rgba(100,75,20,.06);--red:#cc0020;--redb:#e8001e;--reddim:rgba(204,0,32,.08);--redbdr:rgba(204,0,32,.32);--amber:#a05800;--amberdim:rgba(160,88,0,.09);--sage:#1a7a48;--sagedim:rgba(26,122,72,.09);--ice:#1650bb;--icedim:rgba(22,80,187,.08);--purple:#7c3aed;--txt:rgba(60,40,10,.74);--txtb:#3c280a;--txtd:rgba(100,75,20,.36);--shadow:0 4px 18px rgba(0,0,0,.1)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--bdr2)}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:11px;letter-spacing:.03em;min-height:100vh;transition:background .3s,color .3s}
+.page{max-width:940px;margin:0 auto;padding:24px 20px 40px}
+
+/* header */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:.18em;color:var(--goldb)}
+.title-sub{font-size:8px;letter-spacing:.3em;color:var(--txtd);margin-top:2px}
+.hdr-right{display:flex;gap:10px;align-items:center}
+.btn-sm{font-size:8px;padding:4px 12px;border:1px solid var(--bdr2);background:none;color:var(--gold);cursor:pointer;letter-spacing:.2em;transition:all .2s;font-family:'IBM Plex Mono',monospace}
+.btn-sm:hover{background:var(--goldg);border-color:var(--bdr3)}
+.back-link{font-size:8px;color:var(--txtd);letter-spacing:.15em;cursor:pointer;border:1px solid var(--bdr);padding:4px 10px;text-decoration:none;transition:all .2s}
+.back-link:hover{color:var(--goldb);border-color:var(--bdr2)}
+
+/* provider grid */
+.providers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+
+.provider-card{background:var(--surface);border:1px solid var(--bdr);padding:0;overflow:hidden;transition:border-color .25s}
+.provider-card.online{border-color:var(--sage)}
+.provider-card.active-provider{border-color:var(--gold);box-shadow:0 0 20px var(--goldg)}
+.provider-card.offline{border-color:var(--redbdr);opacity:.75}
+
+.pc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bdr)}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--goldb);display:flex;align-items:center;gap:8px}
+.pc-status{font-size:8px;padding:2px 7px;border:1px solid;letter-spacing:.15em}
+.pc-status.on{border-color:var(--sage);color:var(--sage)}
+.pc-status.off{border-color:var(--redbdr);color:var(--redb)}
+.pc-status.active{border-color:var(--gold);color:var(--gold)}
+
+.pc-body{padding:14px 16px}
+.pc-field{margin-bottom:10px}
+.pc-label{font-size:7px;letter-spacing:.28em;color:var(--txtd);margin-bottom:3px;text-transform:uppercase}
+.pc-input{width:100%;background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 8px;outline:none;transition:border-color .2s}
+.pc-input:focus{border-color:var(--gold)}
+.pc-input::placeholder{color:var(--txtd)}
+.pc-input.readonly{opacity:.6;cursor:default}
+select.pc-input option{background:var(--ink)}
+
+.pc-info{font-size:8px;color:var(--txtd);line-height:1.7;margin-bottom:10px}
+.pc-info a{color:var(--ice);text-decoration:none}
+.pc-info a:hover{color:var(--goldb)}
+
+.pc-models{margin-bottom:8px}
+.pc-models-label{font-size:7px;letter-spacing:.2em;color:var(--txtd);margin-bottom:4px}
+.model-chip{display:inline-block;font-size:8px;padding:2px 7px;border:1px solid var(--bdr2);color:var(--txtd);cursor:pointer;margin:2px;transition:all .2s;letter-spacing:.08em}
+.model-chip:hover,.model-chip.active-model{border-color:var(--gold);color:var(--gold);background:var(--goldg)}
+
+.pc-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.btn-act{flex:1;font-size:8px;padding:5px 8px;border:1px solid var(--bdr2);background:none;color:var(--gold);cursor:pointer;letter-spacing:.18em;transition:all .2s;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.btn-act:hover{background:var(--goldg);border-color:var(--bdr3)}
+.btn-act.set-active{border-color:var(--sage);color:var(--sage)}
+.btn-act.set-active:hover{background:var(--sagedim)}
+.btn-act.danger{border-color:var(--redbdr);color:var(--redb)}
+
+/* Test panel */
+.test-panel{background:var(--surface);border:1px solid var(--bdr);margin-bottom:20px}
+.section-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bdr)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--gold);letter-spacing:.1em}
+.section-meta{font-size:8px;color:var(--txtd)}
+
+.test-body{padding:14px 16px}
+.test-prompts{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.qbtn{font-size:8px;padding:3px 9px;border:1px solid var(--bdr);background:none;color:var(--txtd);cursor:pointer;letter-spacing:.08em;transition:all .2s;font-family:'IBM Plex Mono',monospace}
+.qbtn:hover{border-color:var(--bdr2);color:var(--txt)}
+
+textarea.test-input{width:100%;background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:8px 10px;outline:none;resize:vertical;min-height:60px;transition:border-color .2s;margin-bottom:8px}
+textarea.test-input:focus{border-color:var(--gold)}
+
+.test-controls{display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.provider-select{background:var(--lift);border:1px solid var(--bdr);color:var(--txtb);font-family:'IBM Plex Mono',monospace;font-size:9px;padding:4px 8px;outline:none;flex:1}
+.run-btn{font-size:8px;padding:5px 20px;border:1px solid var(--gold);background:none;color:var(--gold);cursor:pointer;letter-spacing:.22em;transition:all .2s;font-family:'IBM Plex Mono',monospace}
+.run-btn:hover{background:var(--goldg)}.run-btn:disabled{opacity:.4;cursor:not-allowed}
+.stream-toggle{display:flex;align-items:center;gap:5px;font-size:8px;color:var(--txtd);cursor:pointer;user-select:none}
+.stream-toggle input{accent-color:var(--gold)}
+
+.test-output{background:var(--lift);border:1px solid var(--bdr);padding:10px 12px;min-height:60px;font-size:10px;color:var(--txt);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.test-output.thinking{color:var(--txtd);font-style:italic}
+.test-meta{font-size:8px;color:var(--txtd);margin-top:5px;display:flex;gap:12px}
+
+/* Priority chain */
+.chain-panel{background:var(--surface);border:1px solid var(--bdr);margin-bottom:20px}
+.chain-body{padding:14px 16px}
+.chain-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--bdr);margin-bottom:5px;cursor:grab;background:var(--lift);transition:border-color .2s}
+.chain-row:hover{border-color:var(--bdr2)}
+.chain-row.dragging{opacity:.5;border-color:var(--gold)}
+.chain-num{font-size:9px;color:var(--txtd);width:16px;flex-shrink:0}
+.chain-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;flex:1}
+.chain-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.chain-dot.on{background:var(--sage);box-shadow:0 0 5px var(--sage)}
+.chain-dot.off{background:var(--redb)}
+.chain-dot.pending{background:var(--amber)}
+.chain-handle{color:var(--txtd);font-size:11px;cursor:grab}
+
+/* Logs */
+.log-area{background:var(--lift);border:1px solid var(--bdr);padding:8px 10px;height:140px;overflow-y:auto;font-size:9px;line-height:1.7}
+.log-line{padding:1px 0;border-bottom:1px solid var(--bdr)}
+.log-line.ok{color:var(--sage)}.log-line.warn{color:var(--amber)}.log-line.err{color:var(--redb)}.log-line.info{color:var(--txt)}
+
+/* toast */
+#toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(6px);padding:6px 16px;border:1px solid var(--bdr2);background:var(--surface);font-size:9px;color:var(--txt);letter-spacing:.1em;opacity:0;transition:all .22s;pointer-events:none;z-index:5000;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.pulsing{animation:pulse 1.2s infinite}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div>
+      <div class="title">⚡ LLM ENGINE</div>
+      <div class="title-sub">LM Studio · Ollama · OpenAI · Claude — SafeNet AI v4</div>
+    </div>
+    <div class="hdr-right">
+      <a class="back-link" href="/">← Dashboard</a>
+      <div class="btn-sm" onclick="toggleTheme()">Toggle Theme</div>
+      <div class="btn-sm" onclick="refreshAll()">↺ Refresh All</div>
+    </div>
+  </div>
+
+  <!-- PROVIDER CARDS -->
+  <div class="providers" id="providers">
+
+    <!-- LM Studio -->
+    <div class="provider-card" id="card-lmstudio">
+      <div class="pc-head">
+        <div class="pc-name">⚡ LM Studio <span style="font-size:9px;color:var(--txtd);font-style:normal;font-family:'IBM Plex Mono',monospace">(local 20B)</span></div>
+        <span class="pc-status off" id="status-lmstudio">OFFLINE</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-info">
+          OpenAI-compatible local server. Load your OSS 20B GGUF in LM Studio → <a href="https://lmstudio.ai" target="_blank">lmstudio.ai</a> → Local Server tab → Start Server.
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Server URL</div>
+          <input class="pc-input" id="lms-url" value="http://localhost:1234" placeholder="http://localhost:1234">
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Active Model (auto-detected)</div>
+          <input class="pc-input" id="lms-model" placeholder="Loading…">
+        </div>
+        <div class="pc-models" id="lms-model-list"></div>
+        <div class="pc-actions">
+          <button class="btn-act" onclick="testProvider('lmstudio')">Test</button>
+          <button class="btn-act set-active" onclick="setMode('lmstudio')">Set as Primary</button>
+          <button class="btn-act" onclick="detectModels('lmstudio')">Detect Models</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ollama -->
+    <div class="provider-card" id="card-ollama">
+      <div class="pc-head">
+        <div class="pc-name">🦙 Ollama <span style="font-size:9px;color:var(--txtd);font-style:normal;font-family:'IBM Plex Mono',monospace">(local)</span></div>
+        <span class="pc-status off" id="status-ollama">OFFLINE</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-info">
+          Local model server. Install: <a href="https://ollama.com" target="_blank">ollama.com</a>. Pull model: <code style="color:var(--ice)">ollama pull llama3</code>
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Server URL</div>
+          <input class="pc-input" id="ollama-url" value="http://localhost:11434" placeholder="http://localhost:11434">
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Model</div>
+          <input class="pc-input" id="ollama-model" value="llama3" placeholder="llama3, mistral, phi3…">
+        </div>
+        <div class="pc-models" id="ollama-model-list"></div>
+        <div class="pc-actions">
+          <button class="btn-act" onclick="testProvider('ollama')">Test</button>
+          <button class="btn-act set-active" onclick="setMode('ollama')">Set as Primary</button>
+          <button class="btn-act" onclick="detectModels('ollama')">Detect Models</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OpenAI -->
+    <div class="provider-card" id="card-openai">
+      <div class="pc-head">
+        <div class="pc-name">🌐 OpenAI GPT <span style="font-size:9px;color:var(--txtd);font-style:normal;font-family:'IBM Plex Mono',monospace">(cloud)</span></div>
+        <span class="pc-status off" id="status-openai">NOT SET</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-info">Cloud GPT models. Get key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>. Billed per token.</div>
+        <div class="pc-field">
+          <div class="pc-label">API Key</div>
+          <input class="pc-input" id="openai-key" type="password" placeholder="sk-…">
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Model</div>
+          <select class="pc-input" id="openai-model">
+            <option value="gpt-4o">gpt-4o (recommended)</option>
+            <option value="gpt-4-turbo">gpt-4-turbo</option>
+            <option value="gpt-4o-mini">gpt-4o-mini (cheaper)</option>
+            <option value="gpt-3.5-turbo">gpt-3.5-turbo (fastest)</option>
+          </select>
+        </div>
+        <div class="pc-actions">
+          <button class="btn-act" onclick="testProvider('openai')">Test</button>
+          <button class="btn-act set-active" onclick="setMode('openai')">Set as Primary</button>
+          <button class="btn-act" onclick="saveOpenAIKey()">Save Key</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claude -->
+    <div class="provider-card" id="card-claude">
+      <div class="pc-head">
+        <div class="pc-name">✦ Claude <span style="font-size:9px;color:var(--txtd);font-style:normal;font-family:'IBM Plex Mono',monospace">(cloud fallback)</span></div>
+        <span class="pc-status off" id="status-claude">NOT SET</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-info">Anthropic Claude. Get key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Used as final cloud fallback.</div>
+        <div class="pc-field">
+          <div class="pc-label">API Key</div>
+          <input class="pc-input" id="claude-key" type="password" placeholder="sk-ant-…">
+        </div>
+        <div class="pc-field">
+          <div class="pc-label">Model</div>
+          <select class="pc-input" id="claude-model">
+            <option value="claude-sonnet-4-20250514">claude-sonnet-4 (recommended)</option>
+            <option value="claude-opus-4-6">claude-opus-4 (most capable)</option>
+            <option value="claude-haiku-4-5-20251001">claude-haiku-4 (fastest)</option>
+          </select>
+        </div>
+        <div class="pc-actions">
+          <button class="btn-act" onclick="testProvider('claude')">Test</button>
+          <button class="btn-act set-active" onclick="setMode('claude')">Set as Primary</button>
+          <button class="btn-act" onclick="saveClaudeKey()">Save Key</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PRIORITY CHAIN -->
+  <div class="chain-panel">
+    <div class="section-hd">
+      <span class="section-title">Auto-Mode Priority Chain</span>
+      <span class="section-meta" id="chainMode">mode: auto</span>
+    </div>
+    <div class="chain-body">
+      <div style="font-size:8px;color:var(--txtd);margin-bottom:10px;line-height:1.7">
+        In auto mode, SafeNet tries providers in this order until one succeeds. Green = online. Red = offline.
+      </div>
+      <div id="chainList">
+        <div class="chain-row" data-p="lmstudio"><span class="chain-num">1</span><span class="chain-name">LM Studio (local 20B)</span><span class="chain-dot off" id="dot-lmstudio"></span><span class="chain-handle">⠿</span></div>
+        <div class="chain-row" data-p="ollama"><span class="chain-num">2</span><span class="chain-name">Ollama (local)</span><span class="chain-dot off" id="dot-ollama"></span><span class="chain-handle">⠿</span></div>
+        <div class="chain-row" data-p="openai"><span class="chain-num">3</span><span class="chain-name">OpenAI GPT (cloud)</span><span class="chain-dot pending" id="dot-openai"></span><span class="chain-handle">⠿</span></div>
+        <div class="chain-row" data-p="claude"><span class="chain-num">4</span><span class="chain-name">Claude API (cloud)</span><span class="chain-dot pending" id="dot-claude"></span><span class="chain-handle">⠿</span></div>
+        <div class="chain-row" data-p="fallback" style="cursor:default"><span class="chain-num">5</span><span class="chain-name">Rule-based (always available)</span><span class="chain-dot on" style="background:var(--gold);box-shadow:0 0 5px var(--gold)"></span><span class="chain-handle" style="opacity:.3">⠿</span></div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-sm" onclick="setMode('auto')">Auto (waterfall)</button>
+        <button class="btn-sm" onclick="setMode('lmstudio')">LM Studio only</button>
+        <button class="btn-sm" onclick="setMode('ollama')">Ollama only</button>
+        <button class="btn-sm" onclick="setMode('openai')">OpenAI only</button>
+        <button class="btn-sm" onclick="setMode('claude')">Claude only</button>
+      </div>
+      <div style="margin-top:8px;font-size:9px;color:var(--txtd)">Current mode: <span id="currentMode" style="color:var(--gold)">auto</span> · Active: <span id="currentActive" style="color:var(--sage)">checking…</span></div>
+    </div>
+  </div>
+
+  <!-- TEST PANEL -->
+  <div class="test-panel">
+    <div class="section-hd">
+      <span class="section-title">Live Test & Prompt Tester</span>
+      <span class="section-meta" id="testMeta">test any provider</span>
+    </div>
+    <div class="test-body">
+      <div class="test-prompts">
+        <button class="qbtn" onclick="setPrompt('Analyze: SSH brute force from 185.220.101.34, 847 failures, HIGH severity')">Brute force</button>
+        <button class="qbtn" onclick="setPrompt('Analyze: HTTP flood DDoS 12000 req/s, CRITICAL severity, target 10.0.0.5')">DDoS</button>
+        <button class="qbtn" onclick="setPrompt('Analyze phishing email from paypa1.com subject: Your account is suspended verify now')">Phishing</button>
+        <button class="qbtn" onclick="setPrompt('Analyze: C2 beacon reverse shell on port 4444 to 185.220.101.34, CRITICAL')">C2 Beacon</button>
+        <button class="qbtn" onclick="setPrompt('What is the difference between a zero-day and an n-day vulnerability?')">XSS test (should stay on-topic)</button>
+        <button class="qbtn" onclick="setPrompt('What is the weather today?')">Off-topic test (should refuse)</button>
+      </div>
+      <textarea class="test-input" id="testPrompt" rows="3" placeholder="Enter a security prompt to test…">Analyze: SSH brute force attack detected from 185.220.101.34, 847 consecutive authentication failures, HIGH severity, target 10.0.0.22</textarea>
+      <div class="test-controls">
+        <select class="provider-select" id="testProvider">
+          <option value="auto">Auto (use current mode)</option>
+          <option value="lmstudio">LM Studio only</option>
+          <option value="ollama">Ollama only</option>
+          <option value="openai">OpenAI only</option>
+          <option value="claude">Claude only</option>
+        </select>
+        <label class="stream-toggle"><input type="checkbox" id="streamToggle" checked> Stream</label>
+        <button class="run-btn" id="runBtn" onclick="runTest()">▶ RUN</button>
+      </div>
+      <div class="test-output thinking" id="testOutput">Response will appear here…</div>
+      <div class="test-meta" id="testMeta2"></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY LOG -->
+  <div class="chain-panel">
+    <div class="section-hd">
+      <span class="section-title">LLM Activity Log</span>
+      <span class="btn-sm" onclick="clearLog()" style="font-size:7px;padding:2px 8px">Clear</span>
+    </div>
+    <div class="chain-body" style="padding:10px 14px">
+      <div class="log-area" id="logArea"></div>
+    </div>
+  </div>
+
+</div>
+<div id="toast"></div>
+
+<script>
+const BASE = window.location.origin;
+let currentMode = 'auto';
+
+// ── Init ─────────────────────────────────────────────────────────────
+async function refreshAll() {
+  log('info', 'Refreshing all LLM backends…');
+  try {
+    const r   = await fetch(`${BASE}/api/analysis/status`);
+    const d   = await r.json();
+    updateStatusCards(d);
+    document.getElementById('currentMode').textContent   = d.mode   || 'auto';
+    document.getElementById('currentActive').textContent = d.active || '—';
+    document.getElementById('chainMode').textContent     = `mode: ${d.mode || 'auto'}`;
+    currentMode = d.mode || 'auto';
+  } catch (e) {
+    log('err', `Status check failed: ${e.message} — is backend running?`);
+    // Show offline state
+    updateStatusCards({ lmstudio: false, ollama: false, openai: false, claude: false });
+  }
+}
+
+function updateStatusCards(d) {
+  setCard('lmstudio', d.lmstudio, d.active?.includes('LM Studio'));
+  setCard('ollama',   d.ollama,   d.active?.includes('Ollama'));
+  setCard('openai',   !!d.openai, d.active?.includes('OpenAI'));
+  setCard('claude',   !!d.claude, d.active?.includes('Claude'));
+
+  // Auto-fill detected values
+  if (d.lmstudio_model && d.lmstudio_model !== 'auto')
+    document.getElementById('lms-model').value = d.lmstudio_model;
+  if (d.ollama_models?.length) renderModelChips('ollama', d.ollama_models);
+  if (d.lmstudio_models?.length) renderModelChips('lmstudio', d.lmstudio_models);
+  if (d.lmstudio_model) document.getElementById('lms-model').value = d.lmstudio_model;
+
+  // Update chain dots
+  setDot('lmstudio', d.lmstudio);
+  setDot('ollama',   d.ollama);
+  setDot('openai',   !!d.openai);
+  setDot('claude',   !!d.claude);
+
+  log('ok', `Status: LM Studio=${d.lmstudio?'✓':'✗'} Ollama=${d.ollama?'✓':'✗'} OpenAI=${d.openai?'✓':'✗'} Claude=${d.claude?'✓':'✗'}`);
+}
+
+function setCard(p, online, active) {
+  const card = document.getElementById(`card-${p}`);
+  const stat = document.getElementById(`status-${p}`);
+  card.classList.remove('online','offline','active-provider');
+  stat.classList.remove('on','off','active');
+  if (active) {
+    card.classList.add('active-provider');
+    stat.textContent = 'ACTIVE'; stat.classList.add('active');
+  } else if (online) {
+    card.classList.add('online');
+    stat.textContent = 'ONLINE'; stat.classList.add('on');
+  } else {
+    card.classList.add('offline');
+    stat.textContent = p === 'openai' || p === 'claude' ? 'NOT SET' : 'OFFLINE';
+    stat.classList.add('off');
+  }
+}
+
+function setDot(p, online) {
+  const dot = document.getElementById(`dot-${p}`);
+  if (!dot) return;
+  dot.className = `chain-dot ${online ? 'on' : 'off'}`;
+}
+
+function renderModelChips(provider, models) {
+  const container = document.getElementById(`${provider}-model-list`);
+  if (!container || !models.length) return;
+  const label = document.createElement('div');
+  label.className = 'pc-models-label';
+  label.textContent = 'Available models:';
+  container.innerHTML = '';
+  container.appendChild(label);
+  models.forEach(m => {
+    const chip = document.createElement('span');
+    chip.className = 'model-chip';
+    chip.textContent = m;
+    chip.onclick = () => selectModel(provider, m, chip);
+    container.appendChild(chip);
+  });
+}
+
+function selectModel(provider, model, chip) {
+  // Mark chip
+  const container = chip.parentElement;
+  container.querySelectorAll('.model-chip').forEach(c => c.classList.remove('active-model'));
+  chip.classList.add('active-model');
+  // Set input
+  if (provider === 'lmstudio') document.getElementById('lms-model').value = model;
+  if (provider === 'ollama')   document.getElementById('ollama-model').value = model;
+  // Apply to backend
+  fetch(`${BASE}/api/analysis/set-model`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ provider, model })
+  }).then(() => { toast(`${provider} model → ${model}`); log('ok', `Set ${provider} model: ${model}`); })
+    .catch(e => log('err', `Set model failed: ${e}`));
+}
+
+// ── Provider actions ──────────────────────────────────────────────────
+async function testProvider(provider) {
+  const prompt = 'Analyze: SSH brute force detected, 500 consecutive failures, HIGH severity. One sentence.';
+  log('info', `Testing ${provider}…`);
+  try {
+    const r = await fetch(`${BASE}/api/analysis/test-prompt`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt, provider })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      log('ok', `${provider} ✓ — ${d.result?.slice(0,120)}…`);
+      toast(`${provider} test passed ✓`);
+    } else {
+      log('err', `${provider} ✗ — ${d.error}`);
+      toast(`${provider} failed: ${d.error}`, true);
+    }
+  } catch (e) {
+    log('err', `${provider} test error: ${e.message}`);
+    toast(`${provider} unreachable`, true);
+  }
+}
+
+async function setMode(mode) {
+  try {
+    await fetch(`${BASE}/api/analysis/set-mode`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ mode })
+    });
+    currentMode = mode;
+    document.getElementById('currentMode').textContent = mode;
+    toast(`Mode set to: ${mode}`);
+    log('ok', `LLM mode changed to: ${mode}`);
+    setTimeout(refreshAll, 500);
+  } catch (e) {
+    toast(`Mode change failed — backend offline?`, true);
+  }
+}
+
+async function detectModels(provider) {
+  if (provider === 'lmstudio') {
+    try {
+      const r = await fetch(`${BASE}/api/analysis/lmstudio/models`);
+      const d = await r.json();
+      if (d.ok && d.models.length) {
+        renderModelChips('lmstudio', d.models);
+        document.getElementById('lms-model').value = d.current || d.models[0];
+        log('ok', `LM Studio models: ${d.models.join(', ')}`);
+        toast(`Found ${d.models.length} model(s)`);
+      } else {
+        log('warn', `LM Studio: ${d.error || 'no models found'}`);
+        toast('LM Studio offline — start server first', true);
+      }
+    } catch (e) { log('err', `LM Studio detect failed: ${e}`); }
+  } else if (provider === 'ollama') {
+    try {
+      const r = await fetch(`${BASE}/api/analysis/status`);
+      const d = await r.json();
+      if (d.ollama_models?.length) {
+        renderModelChips('ollama', d.ollama_models);
+        log('ok', `Ollama models: ${d.ollama_models.join(', ')}`);
+      }
+    } catch (e) { log('err', `Ollama detect failed: ${e}`); }
+  }
+}
+
+function saveOpenAIKey() {
+  const key   = document.getElementById('openai-key').value.trim();
+  const model = document.getElementById('openai-model').value;
+  if (!key) { toast('Enter API key first', true); return; }
+  // In production, POST to a secure backend endpoint that saves to .env
+  // For now, we show instructions
+  toast('Add OPENAI_API_KEY to your .env file and restart');
+  log('info', `OpenAI key: set OPENAI_API_KEY=sk-... in .env, model: ${model}`);
+}
+
+function saveClaudeKey() {
+  const key = document.getElementById('claude-key').value.trim();
+  if (!key) { toast('Enter API key first', true); return; }
+  toast('Add ANTHROPIC_API_KEY to your .env file and restart');
+  log('info', 'Claude key: set ANTHROPIC_API_KEY=sk-ant-... in .env');
+}
+
+// ── Test panel ────────────────────────────────────────────────────────
+function setPrompt(p) {
+  document.getElementById('testPrompt').value = p;
+}
+
+async function runTest() {
+  const prompt   = document.getElementById('testPrompt').value.trim();
+  const provider = document.getElementById('testProvider').value;
+  const stream   = document.getElementById('streamToggle').checked;
+  const output   = document.getElementById('testOutput');
+  const runBtn   = document.getElementById('runBtn');
+  const meta     = document.getElementById('testMeta2');
+  if (!prompt) { toast('Enter a prompt', true); return; }
+
+  runBtn.disabled = true; runBtn.textContent = '…';
+  output.textContent = 'Thinking…'; output.className = 'test-output thinking';
+  meta.textContent = '';
+  const start = Date.now();
+
+  // Try streaming if LM Studio and stream enabled
+  if (stream && (provider === 'lmstudio' || (provider === 'auto' && currentMode !== 'ollama'))) {
+    await streamTest(prompt, output, meta, start, runBtn);
+    return;
+  }
+
+  // Standard request
+  try {
+    const r = await fetch(`${BASE}/api/analysis/test-prompt`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt, provider })
+    });
+    const d = await r.json();
+    const ms = Date.now() - start;
+    if (d.ok) {
+      output.textContent = d.result;
+      output.className = 'test-output';
+      meta.textContent = `Provider: ${d.provider || provider} · ${ms}ms`;
+      log('ok', `Test ✓ (${ms}ms via ${d.provider || provider})`);
+    } else {
+      output.textContent = `Error: ${d.error}`;
+      output.className = 'test-output';
+      output.style.color = 'var(--redb)';
+      log('err', `Test failed: ${d.error}`);
+    }
+  } catch (e) {
+    output.textContent = 'Backend offline — check python main.py is running';
+    output.className = 'test-output';
+    output.style.color = 'var(--redb)';
+    log('err', `Request failed: ${e.message}`);
+  }
+  runBtn.disabled = false; runBtn.textContent = '▶ RUN';
+}
+
+async function streamTest(prompt, output, meta, start, runBtn) {
+  output.textContent = '';
+  output.className = 'test-output';
+  output.style.color = '';
+
+  try {
+    const r = await fetch(`${BASE}/api/analysis/lmstudio/stream`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') break;
+          try {
+            const obj = JSON.parse(data);
+            if (obj.token) {
+              output.textContent += obj.token;
+            }
+            if (obj.error) {
+              // Fallback to standard test
+              runBtn.disabled = false; runBtn.textContent = '▶ RUN';
+              return runTest();
+            }
+          } catch {}
+        }
+      }
+    }
+
+    const ms = Date.now() - start;
+    meta.textContent = `Provider: LM Studio (stream) · ${ms}ms`;
+    log('ok', `Stream test ✓ (${ms}ms)`);
+  } catch (e) {
+    // Fallback to non-stream
+    log('warn', `Stream failed (${e.message}), falling back to standard…`);
+    await fetch(`${BASE}/api/analysis/test-prompt`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt, provider: 'auto' })
+    }).then(r => r.json()).then(d => {
+      output.textContent = d.ok ? d.result : `Error: ${d.error}`;
+      meta.textContent = `Provider: ${d.provider || 'auto'} · ${Date.now()-start}ms`;
+    }).catch(() => {
+      output.textContent = 'All backends offline.';
+    });
+  }
+  runBtn.disabled = false; runBtn.textContent = '▶ RUN';
+}
+
+// ── Log ────────────────────────────────────────────────────────────────
+function log(level, msg) {
+  const area = document.getElementById('logArea');
+  const d = document.createElement('div');
+  d.className = `log-line ${level}`;
+  d.textContent = `${new Date().toTimeString().slice(0,8)} [${level.toUpperCase()}] ${msg}`;
+  area.appendChild(d);
+  area.scrollTop = area.scrollHeight;
+  while (area.children.length > 100) area.removeChild(area.firstChild);
+}
+
+function clearLog() {
+  document.getElementById('logArea').innerHTML = '';
+}
+
+// ── Theme ──────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const h = document.documentElement;
+  h.dataset.theme = h.dataset.theme === 'dark' ? 'light' : 'dark';
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────
+let toastT;
+function toast(msg, red=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show';
+  el.style.borderColor = red ? 'var(--redbdr)' : 'var(--bdr2)';
+  el.style.color        = red ? 'var(--redb)'   : 'var(--txt)';
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.className = '', 2800);
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  log('info', 'LLM Engine panel loaded');
+  refreshAll();
+  // Auto-refresh every 30s
+  setInterval(refreshAll, 30000);
+});
+</script>
+</body>
+</html>
