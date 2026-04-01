@@ -1,792 +1,768 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=300&text=SafeNet%20AI%20v4&fontSize=90&fontColor=00E5FF&color=0:03050f,40:060d24,100:0a0f2e&desc=AI-Powered%20Cybersecurity%20Threat%20Intelligence%20Platform&descSize=20&descAlignY=75&descAlign=50&animation=fadeIn" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=240&text=SafeNet%20AI&fontSize=90&fontColor=00E5FF&color=0:000005,25:03050f,60:060d1e,100:000005&desc=v4.0%20%E2%80%94%20Advanced%20Threat%20Intelligence%20Platform&descSize=20&descAlignY=74&descAlign=50&animation=fadeIn&stroke=00E5FF&strokeWidth=1" width="100%"/>
 
 </div>
-
-<br/>
-
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&weight=600&size=16&pause=900&color=00E5FF&center=true&vCenter=true&width=800&lines=⚡+Real-time+Intrusion+Detection+%26+Response;🔍+Deep+Packet+Inspection+(DPI)+Engine;📧+AI+Phishing+%26+Email+Fraud+Detection;🌐+IP+Intelligence+%26+Anonymity+Scoring;👤+User+Behavior+Analytics+(UBA);⚡+SOAR+Automation+—+No+Human+Needed;📁+Entropy-Based+Malware+File+Scanner;🧠+Local+LLM+Security+Copilot+(LM+Studio);🔔+SMS+%7C+Email+%7C+Voice+Call+Alerts;🛡️+100%25+Local.+Zero+Cloud.+Full+Control." />
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Version-v4.0-00E5FF?style=for-the-badge&labelColor=03050f"/>
-  <img src="https://img.shields.io/badge/License-MIT-39ff8f?style=for-the-badge&labelColor=03050f"/>
-  <img src="https://img.shields.io/badge/Status-Enterprise--Ready-39ff8f?style=for-the-badge&labelColor=03050f"/>
-  <img src="https://img.shields.io/badge/AI-LM%20Studio%20OSS%2020B-ff3d6b?style=for-the-badge&labelColor=03050f"/>
-  <img src="https://img.shields.io/badge/PRs-Welcome-00E5FF?style=for-the-badge&labelColor=03050f"/>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=00E5FF"/>
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
-  <img src="https://img.shields.io/badge/WebSockets-00E5FF?style=for-the-badge&labelColor=03050f"/>
-  <img src="https://img.shields.io/badge/LM%20Studio-00E5FF?style=for-the-badge&logo=openai&logoColor=black"/>
-  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=twilio&logoColor=white"/>
-  <img src="https://img.shields.io/badge/SendGrid-1A82E2?style=for-the-badge&logo=sendgrid&logoColor=white"/>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-<br/>
-
-## `> whoami` &nbsp;·&nbsp; What is SafeNet AI?
-
-<img align="right" src="https://media.giphy.com/media/077i6AULCXc0FKTj9s/giphy.gif" width="260"/>
-
-```python
-safenet = {
-    "type"    : "AI-Powered SOC Platform",
-    "version" : "v4.0",
-    "mode"    : "100% Local — Zero Cloud",
-    "llm"     : "LM Studio (OSS 20B via OpenAI API)",
-    "modules" : 10,
-    "alerts"  : ["SMS", "Email", "Voice Call", "Webhook"],
-    "cloud_calls" : 0,
-    "data_egress" : "Never",
-}
-```
-
-**SafeNet AI v4** is a next-generation cybersecurity intelligence platform built to run entirely on your machine. It combines Deep Packet Inspection, AI threat reasoning via a local LLM, User Behavior Analytics, SOAR automation, phishing detection, file malware scanning, and real-time dashboards — all without a single byte leaving your device.
-
-Your **LM Studio OSS 20B model** acts as the brain — analyzing threats, explaining attacks, scoring phishing emails, and recommending SOAR actions in real time. The system prompt **locks the LLM to cybersecurity analysis only** — it cannot drift, hallucinate off-topic, or be jailbroken into answering unrelated questions.
-
-> 🛡️ Think of it as a **private AI-powered SOC (Security Operations Center)** — running locally, operating silently, and responding automatically before damage is done.
-
-<br clear="right"/>
-
-<br/>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> cat /var/log/safenet.log` &nbsp;·&nbsp; Live Console
-
-```
-╔══════════════════════════════════════════════════════════════════════════╗
-║  SafeNet AI v4.0  ·  Threat Command Centre  ·  10 modules active        ║
-╠══════════════════════════════════════════════════════════════════════════╣
-║                                                                          ║
-║  09:14:03  [BOOT]    System initialized · LM Studio connected ✓          ║
-║  09:14:05  [OK]      10 detection modules loaded · SOAR rules active     ║
-║  09:14:07  [WARN]    IP 185.234.xx.xx · VPN/TOR exit node · Score: 82   ║
-║  09:14:09  [ALERT]   Brute-force · 847 failures in 60s → IP BLOCKED     ║
-║  09:14:11  [CRIT]    C2 beacon → port 4444 · SOAR: ISOLATE_HOST         ║
-║  09:14:13  [WARN]    Unknown device MAC DE:AD:BE:EF:00:21 detected       ║
-║  09:14:15  [ALERT]   Phishing: fake-bank-login.ru → MALICIOUS (94/100)  ║
-║  09:14:17  [AI]      LLM analysis complete · 3 incidents · 2 blocked     ║
-║  09:14:19  [OK]      PDF threat report generated · SMS sent ✓            ║
-║                                                                          ║
-╚══════════════════════════════════════════════════════════════════════════╝
-```
-
-<br/>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> ls -la features/` &nbsp;·&nbsp; Core Modules
 
 <div align="center">
 
-| # | Module | What It Does | Engine |
-|:-:|--------|-------------|--------|
-| `01` | ⚡ **DPI Engine** | Full payload inspection — SQLi, XSS, C2, reverse shells | Scapy · Pattern Rules |
-| `02` | 🤖 **LLM Threat Analysis** | Contextual attack classification, locked to cybersec | LM Studio · OpenAI API |
-| `03` | 📧 **Email Analyzer** | NLP phishing detection — urgency, spoofing, fake links | NLP · Rules Engine |
-| `04` | 🌐 **IP Intelligence** | Geo, VPN/TOR/proxy detection, reputation 0–100 | ip-api · AbuseIPDB |
-| `05` | 👤 **UBA Engine** | Insider threats — off-hours, bulk downloads, anomalies | Behavioral ML |
-| `06` | 🔥 **SOAR Automation** | Auto block/isolate/rate-limit with LLM confirmation | Event Engine |
-| `07` | 📁 **File Scanner** | Shannon entropy + signature scan, malware families | Entropy · Hash DB |
-| `08` | 🧠 **AI Copilot** | Security-locked RAG assistant — 100% local | LM Studio · Context |
-| `09` | 🚨 **Alert Channels** | SMS, Email, Voice Call, Webhook on every threat | Twilio · SendGrid |
-| `10` | 📊 **Live Dashboard** | WebSocket real-time threat stream + light/dark mode | Chart.js · SocketIO |
+**AI-Powered Cybersecurity Intelligence Platform · Real-time · Local · Private · Automated**
 
 </div>
 
 <br/>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
+  <img src="https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&weight=600&size=15&pause=800&color=00E5FF&center=true&vCenter=true&multiline=false&width=820&lines=%E2%9A%A1+Real-time+Intrusion+Detection+%26+Automated+Response;%F0%9F%94%8D+Deep+Packet+Inspection+(DPI)+Engine;%F0%9F%93%A7+AI+Phishing+%26+Email+Fraud+Detection+(NLP);%F0%9F%8C%90+IP+Intelligence+%C2%B7+VPN+%C2%B7+TOR+%C2%B7+Proxy+Detection;%F0%9F%91%A4+User+Behavior+Analytics+(UBA)+%C2%B7+Insider+Threats;%E2%9A%A1+SOAR+Automation+%E2%80%94+Zero+Human+Latency;%F0%9F%93%81+Entropy-Based+Malware+%26+File+Scanner;%F0%9F%A7%A0+LM+Studio+OSS+20B+Security+Copilot;%F0%9F%94%94+SMS+%C2%B7+Email+%C2%B7+Voice+Call+%C2%B7+Webhook;%F0%9F%9B%A1%EF%B8%8F+100%25+Local.+Zero+Cloud.+Fully+Private." alt="Typing SVG" />
 </p>
 
-## `> ./modules --details` &nbsp;·&nbsp; Deep Feature Breakdown
-
-<details>
-<summary><b>⚡ Deep Packet Inspection (DPI)</b></summary>
 <br/>
 
-Unlike traditional firewalls that inspect only headers, SafeNet reads the full packet payload and detects:
+<div align="center">
 
-```
-Attack Type          Detection Method                Severity
-──────────────────   ─────────────────────────────   ────────
-SQL Injection         UNION SELECT pattern matching   HIGH
-XSS Injection         Script tag + encoding scan      HIGH
-C2 Beacon             Port + payload heuristics       CRITICAL
-Reverse Shell         Callback signature + port 4444  CRITICAL
-DDoS Flood            Request rate baseline anomaly   CRITICAL
-Port Scan             Sequential probe detection      MEDIUM
-SMB Exploit           EternalBlue signature (MS17-010) CRITICAL
-SSL Stripping         HTTPS→HTTP redirect injection   HIGH
-Redis Attack          Unauthenticated SLAVEOF cmd      HIGH
-```
+<img src="https://img.shields.io/badge/━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-03050f?style=for-the-badge" width="100%"/>
 
-Every packet is processed through 3 layers: signature matching → behavioral heuristics → LLM classification.
+<img src="https://img.shields.io/badge/◈%20VERSION-v4.0-00E5FF?style=for-the-badge&labelColor=000008&logo=shield&logoColor=00E5FF"/>
+<img src="https://img.shields.io/badge/◈%20STATUS-ARMED%20%26%20ACTIVE-39ff8f?style=for-the-badge&labelColor=000008"/>
+<img src="https://img.shields.io/badge/◈%20LICENSE-MIT-00E5FF?style=for-the-badge&labelColor=000008"/>
+<img src="https://img.shields.io/badge/◈%20AI%20ENGINE-LOCAL%20OSS%2020B-ff3d6b?style=for-the-badge&labelColor=000008"/>
+<img src="https://img.shields.io/badge/◈%20CLOUD%20CALLS-ZERO-39ff8f?style=for-the-badge&labelColor=000008"/>
 
-</details>
-
-<details>
-<summary><b>📧 AI Email Analyzer (Phishing Detection)</b></summary>
 <br/>
 
-LLM-powered NLP analysis — not just keyword filters. Detects:
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=000008"/>
+<img src="https://img.shields.io/badge/Flask-00E5FF?style=for-the-badge&logo=flask&logoColor=000008&labelColor=000008"/>
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000008&labelColor=000008"/>
+<img src="https://img.shields.io/badge/WebSocket-00E5FF?style=for-the-badge&labelColor=000008&logoColor=00E5FF"/>
+<img src="https://img.shields.io/badge/LM%20Studio-00E5FF?style=for-the-badge&logo=openai&logoColor=000008&labelColor=000008"/>
+<img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white&labelColor=000008"/>
+<img src="https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=twilio&logoColor=white&labelColor=000008"/>
+<img src="https://img.shields.io/badge/SendGrid-1A82E2?style=for-the-badge&logo=sendgrid&logoColor=white&labelColor=000008"/>
+
+<img src="https://img.shields.io/badge/━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-03050f?style=for-the-badge" width="100%"/>
+
+</div>
+
+<br/>
+
+---
+
+## 〔 01 〕 WHAT IS SAFENET AI?
+
+<img align="right" src="https://media.giphy.com/media/077i6AULCXc0FKTj9s/giphy.gif" width="270" style="border: 1px solid #00E5FF;"/>
+
+**SafeNet AI v4** is a next-generation, **fully local** cybersecurity intelligence platform. It runs entirely on your machine — no cloud, no subscriptions, no data egress.
+
+Your **LM Studio OSS 20B model** acts as the intelligence brain, permanently locked to cybersecurity analysis through a hardened system prompt. It cannot drift, cannot hallucinate off-topic, cannot be redirected to unrelated questions.
 
 ```python
-signals_detected = [
-    "Urgency phrases: 'verify now', 'account suspended', '24 hours'",
-    "Domain spoofing: paypa1.com → PayPal typosquatting",
-    "SPF/DKIM/DMARC authentication failures",
-    "Link text mismatch: shows 'google.com', links to 185.x.x.x",
-    "AI-generated email patterns: uniform paragraph structure",
-    "CEO impersonation + financial fraud language",
-    "Suspicious TLD: .xyz .top .tk .ml .ga domains",
-    "URL shorteners hiding destination: bit.ly tinyurl.com",
-]
-
-verdict = "SAFE | SUSPICIOUS | MALICIOUS"
-score   = 0  # to 100
-```
-
-</details>
-
-<details>
-<summary><b>🌐 IP Intelligence System</b></summary>
-<br/>
-
-Every threat IP is analyzed across 5 enrichment layers:
-
-```
-Layer 1 → Geolocation (country, city, ISP via ip-api.com)
-Layer 2 → Anonymization (TOR exit node list, VPN ASN detection)
-Layer 3 → Reputation score (0–100 via AbuseIPDB integration)
-Layer 4 → Malicious subnet ranges (known attack infrastructure)
-Layer 5 → Impossible travel detection (geo velocity analysis)
-
-Output:
-  anonymity_label: RESIDENTIAL | VPN | PROXY | TOR EXIT NODE | DATACENTER
-  score: 0 (clean) → 100 (critical)
-  action: ALLOW | MONITOR | BLOCK
-```
-
-</details>
-
-<details>
-<summary><b>👤 User Behavior Analytics (UBA)</b></summary>
-<br/>
-
-Builds behavioral profiles over time and flags deviations:
-
-```python
-THRESHOLDS = {
-    "off_hours_access"  : (22, 6),       # 10pm–6am = suspicious
-    "failed_logins"     : 5,             # 5 consecutive fails
-    "data_download_spike": 10,           # 10x normal volume
-    "new_device_access" : True,          # unknown device = alert
-    "geo_velocity"      : 500,           # km/h — impossible travel
+safenet = {
+    "type"      : "AI-Powered SOC Platform",
+    "version"   : "v4.0",
+    "llm"       : "LM Studio OSS 20B (OpenAI-compatible API)",
+    "modules"   : 10,
+    "rules"     : 6,           # SOAR auto-response rules
+    "alerts"    : ["SMS", "Email", "Voice Call", "Webhook"],
+    "latency"   : "< 200ms",  # threat to response
+    "cloud"     : 0,
+    "egress"    : "Never",
+    "control"   : "100% yours",
 }
-
-classifications = [
-    "INSIDER_THREAT",       # deliberate malicious action
-    "COMPROMISED_ACCOUNT",  # credentials stolen/abused
-    "NORMAL_DEVIATION",     # unusual but explainable
-]
 ```
 
-</details>
+> 🛡 Think of it as your **private AI-powered SOC** — detecting, classifying, and containing threats before you even read the alert.
 
-<details>
-<summary><b>🔥 SOAR Automation Rules</b></summary>
-<br/>
+<br clear="right"/>
 
-SafeNet reacts **before you even know it happened**:
+---
 
+## 〔 02 〕 LIVE CONSOLE
+
+> v4.0 · Threat Command Centre · 10 Modules · 6 SOAR Rules · ARMED
+
+| Time | Level | Event |
+|------|:-----:|-------|
+| 09:14:03 | `BOOT` | System online · LM Studio connected ✓ · 10 modules active |
+| 09:14:07 | ⚠ `WARN` | IP 185.234.xx.xx · TOR exit node confirmed · Score: 92 |
+| 09:14:09 | 🔴 `CRIT` | SSH brute force · 847 failures in 60s → IP BLOCKED |
+| 09:14:11 | 🔴 `CRIT` | C2 beacon port:4444 → known infra → SOAR: ISOLATE_HOST |
+| 09:14:13 | ⚠ `WARN` | Unknown MAC: DE:AD:BE:EF:00:21 · Unauthorized device |
+| 09:14:15 | 🔴 `CRIT` | Phishing: paypa1-verify.ru flagged MALICIOUS · Score: 94 |
+| 09:14:17 | 🤖 `AI` | LLM analysis complete · 3 classified · 2 IPs blocked |
+| 09:14:19 | ✅ `OK` | SMS dispatched · PDF report ready · SOAR: 4 actions run |
+
+---
+
+## 〔 03 〕 SYSTEM ARCHITECTURE
+
+```mermaid
+flowchart TD
+    classDef ingress  fill:#00E5FF,color:#000008,stroke:#00E5FF,stroke-width:2px,font-weight:bold
+    classDef engine   fill:#071428,color:#00E5FF,stroke:#00E5FF,stroke-width:1.5px
+    classDef llm      fill:#120720,color:#c084fc,stroke:#a855f7,stroke-width:2px,font-weight:bold
+    classDef soar     fill:#1c1000,color:#FFC107,stroke:#FFC107,stroke-width:2px,font-weight:bold
+    classDef alert    fill:#1c0008,color:#ff3d6b,stroke:#ff3d6b,stroke-width:2px
+    classDef safe     fill:#001c0a,color:#39ff8f,stroke:#39ff8f,stroke-width:1.5px
+    classDef decision fill:#0a0a0a,color:#00E5FF,stroke:#00E5FF,stroke-width:2px
+
+    IN(["`**NETWORK TRAFFIC**
+    Logs · Packets · Events`"]):::ingress
+
+    subgraph DET["DETECTION LAYER"]
+        D1["`**⚡ DPI Engine**
+        Payload Inspection`"]:::engine
+        D2["`**🌐 Threat Intel**
+        IP Reputation`"]:::engine
+        D3["`**👤 UBA Engine**
+        Behavior Profile`"]:::engine
+        D4["`**📧 Email Analyzer**
+        NLP Phishing`"]:::engine
+        D5["`**📁 File Scanner**
+        Entropy + Sig`"]:::engine
+    end
+
+    SC{"`**SCORE**
+    0 → 100`"}:::decision
+
+    subgraph LLM["LLM INTELLIGENCE"]
+        L1["`**⚡ LM Studio OSS 20B**
+        Primary · Local`"]:::llm
+        L2["`**🦙 Ollama**
+        Fallback 1`"]:::llm
+        L3["`**🌐 OpenAI / Claude**
+        Fallback 2 & 3`"]:::llm
+    end
+
+    subgraph SOAR["SOAR ENGINE"]
+        S1["`**BLOCK_IP**
+        R001 R003`"]:::soar
+        S2["`**ISOLATE_HOST**
+        R006`"]:::soar
+        S3["`**RATE_LIMIT**
+        R002`"]:::soar
+        S4["`**ALERT_ONLY**
+        R004 R005`"]:::safe
+    end
+
+    subgraph OUT["DISPATCH"]
+        A1["`📱 **SMS**`"]:::alert
+        A2["`✉ **Email**`"]:::alert
+        A3["`📞 **Voice**`"]:::alert
+        A4["`⇒ **Webhook**`"]:::alert
+    end
+
+    IN --> D1 & D2 & D3 & D4 & D5
+    D1 & D2 & D3 & D4 & D5 --> SC
+    SC -->|"≥ 30"| L1
+    L1 -->|offline| L2
+    L2 -->|offline| L3
+    SC -->|"< 30"| S4
+    L1 & L2 & L3 --> S1 & S2 & S3 & S4
+    S1 & S2 & S3 --> A1 & A2 & A3 & A4
 ```
-Rule ID  Trigger                      Action          LLM Confirmed
-───────  ──────────────────────────   ─────────────   ─────────────
-R001     C2 beacon / RCE CRITICAL  →  BLOCK_IP        ✓ Yes
-R002     DDoS / HTTP flood         →  RATE_LIMIT       — No
-R003     Brute force HIGH          →  BLOCK_IP        ✓ Yes
-R004     Port scan MEDIUM          →  ALERT_ONLY       — No
-R005     SQL injection             →  ALERT_ONLY       — No
-R006     SMB EternalBlue exploit   →  ISOLATE_HOST    ✓ Yes
+
+---
+
+## 〔 04 〕 LLM PRIORITY CHAIN
+
+```mermaid
+flowchart LR
+    classDef lock    fill:#1c0008,color:#ff3d6b,stroke:#ff3d6b,stroke-width:2px,font-weight:bold
+    classDef local   fill:#001c0a,color:#39ff8f,stroke:#39ff8f,stroke-width:2px,font-weight:bold
+    classDef cloud   fill:#071428,color:#00E5FF,stroke:#00E5FF,stroke-width:1.5px
+    classDef offline fill:#0f0f0f,color:#555,stroke:#333,stroke-width:1px
+
+    P(["`🔒 **PROMPT**
+    + Hard Security Lock
+    temp = 0.12`"]):::lock
+
+    A["`⚡ **LM Studio**
+    OSS 20B · :1234
+    ① PRIMARY`"]:::local
+
+    B["`🦙 **Ollama**
+    llama3 / mistral
+    ② LOCAL FALLBACK`"]:::local
+
+    C["`🌐 **OpenAI GPT**
+    gpt-4o · cloud
+    ③ CLOUD FALLBACK`"]:::cloud
+
+    D["`✦ **Claude API**
+    claude-sonnet
+    ④ FINAL CLOUD`"]:::cloud
+
+    E["`📋 **Rule-Based**
+    Always available
+    ⑤ OFFLINE`"]:::offline
+
+    R(["`✅ **ANALYSIS**
+    Cybersec-locked
+    response`"]):::lock
+
+    P --> A
+    A -- "unreachable" --> B
+    B -- "unreachable" --> C
+    C -- "no key" --> D
+    D -- "no key" --> E
+    A & B & C & D & E --> R
 ```
 
-LLM confirmation adds an intelligence layer — for critical actions like host isolation, the LLM reviews the event and writes a one-sentence justification before action executes.
+---
 
-</details>
+## 〔 05 〕 MODULE MAP
 
-<details>
-<summary><b>📁 File Scanner (Entropy-Based Malware Detection)</b></summary>
-<br/>
-
-Uses **Shannon Entropy** — the same technique used by enterprise AV:
-
-```python
-# High entropy = packed / encrypted = suspicious
-entropy_thresholds = {
-    "< 6.0": "CLEAN    — normal file structure",
-    "6.0–7.2": "MEDIUM  — review recommended",
-    "> 7.2": "HIGH    — packed/encrypted binary",
-}
-
-additional_checks = [
-    "Known malware hash (MD5 / SHA-256) comparison",
-    "Double extension detection: invoice.pdf.exe",
-    "Malware family string matching: mimikatz, cobalt strike, wannacry",
-    "Registry persistence, shadow copy deletion signatures",
-    "PowerShell dropper, base64 decode patterns",
-    "Zero-byte and suspiciously small executable detection",
-]
+```mermaid
+mindmap
+  root("`**◈ SafeNet AI v4**`")
+    **NETWORK**
+      DPI Engine
+        SQLi Payloads
+        XSS Patterns
+        C2 Beacons
+        Reverse Shells
+        SMB Exploits
+      Threat Intel
+        IP Blacklists
+        Malicious Subnets
+        AbuseIPDB
+        Auto-Block
+    **IDENTITY**
+      IP Intelligence
+        Geolocation
+        TOR Exit Nodes
+        VPN / Proxy
+        Anonymity Score
+      Device Tracking
+        MAC Monitoring
+        Unknown Devices
+        Browser Signature
+    **BEHAVIOUR**
+      UBA Engine
+        Login Timing
+        Data Spikes
+        New Device
+        Geo Velocity
+      Insider Threat
+        Off-hours Access
+        Privilege Misuse
+        Lateral Movement
+    **COMMS**
+      Email Analyzer
+        NLP Urgency
+        Domain Spoofing
+        SPF DKIM DMARC
+        AI-Gen Detect
+      Link Scanner
+        URL Shorteners
+        SSL Check
+        Redirect Chains
+    **FILES**
+      Malware Scanner
+        Shannon Entropy
+        Hash Database
+        Signature Match
+        Double Extension
+    **RESPONSE**
+      SOAR Rules
+        BLOCK IP
+        ISOLATE HOST
+        RATE LIMIT
+        DISABLE ACCOUNT
+      Alert Dispatch
+        SMS Twilio
+        Email SendGrid
+        Voice TwiML
+        Webhook SIEM
 ```
 
-</details>
+---
 
-<details>
-<summary><b>🧠 AI Copilot (Security-Locked Local LLM)</b></summary>
-<br/>
+## 〔 06 〕 SOAR RESPONSE FLOW
 
-The most powerful feature. The LLM is locked at `temperature=0.12` with a hard system prompt that **refuses off-topic questions** — it cannot be redirected to answer anything outside cybersecurity, no matter what the user asks.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant N  as 🌐 Network
+    participant D  as 🔍 Detection
+    participant L  as 🧠 LM Studio
+    participant SR as ⚡ SOAR
+    participant CH as 📡 Channels
 
+    N->>D: Raw traffic / log event
+    D->>D: Score 0→100
+
+    alt CRITICAL ( ≥ 80 )
+        D->>L: Analyze + confirm action
+        L-->>D: BLOCK_IP + ISOLATE_HOST ✓
+        D->>SR: R001 / R006 execute
+        SR->>CH: 📱 SMS + 📞 Voice Call
+        CH-->>SR: Dispatched ✓
+        Note over SR,CH: Response < 200ms
+    else HIGH ( 50–79 )
+        D->>L: Classify threat
+        L-->>D: BLOCK_IP recommended
+        D->>SR: R003 execute
+        SR->>CH: 📱 SMS + ✉ Email
+    else MEDIUM ( 20–49 )
+        D->>SR: R004 / R005 ALERT_ONLY
+        SR->>CH: ✉ Email / ⇒ Webhook
+    else CLEAN ( < 20 )
+        D->>D: Log and continue
+    end
 ```
-You: "What is the weather today?"
-SafeNet AI: "I am focused exclusively on cybersecurity threat 
-             analysis. Please submit a security-related query."
 
-You: "Analyze: 847 SSH failures from 185.220.101.34 in 60 seconds"
-SafeNet AI: "HIGH severity brute force attack confirmed via SSH 
-             credential stuffing against port 22. Block source IP 
-             at perimeter firewall immediately and enforce MFA on 
-             all SSH endpoints. Review authentication logs for any 
-             successful logins during the attack window."
+---
+
+## 〔 07 〕 EMAIL ANALYZER FLOW
+
+```mermaid
+flowchart TD
+    classDef inp  fill:#00E5FF,color:#000,stroke:none,font-weight:bold
+    classDef chk  fill:#071428,color:#00E5FF,stroke:#00E5FF,stroke-width:1px
+    classDef llm  fill:#120720,color:#c084fc,stroke:#a855f7,stroke-width:2px
+    classDef good fill:#001c0a,color:#39ff8f,stroke:#39ff8f,stroke-width:2px,font-weight:bold
+    classDef warn fill:#1c1000,color:#FFC107,stroke:#FFC107,stroke-width:2px,font-weight:bold
+    classDef bad  fill:#1c0008,color:#ff3d6b,stroke:#ff3d6b,stroke-width:2px,font-weight:bold
+
+    IN(["`✉ **Email Input**
+    sender · subject
+    body · headers`"]):::inp
+
+    C1["`**Sender Domain**
+    Spoofing · Typosquatting`"]:::chk
+    C2["`**Header Auth**
+    SPF · DKIM · DMARC`"]:::chk
+    C3["`**NLP Body Scan**
+    Urgency · Social Eng`"]:::chk
+    C4["`**Link Safety**
+    SSL · Redirects · TLD`"]:::chk
+    C5["`**AI-Gen Detect**
+    Paragraph uniformity`"]:::chk
+
+    AGG{"`Score
+    0–100`"}
+
+    LLM["`🧠 **LM Studio OSS 20B**
+    Deep analysis ≥ 35`"]:::llm
+
+    SAFE(["`✅ SAFE
+    Score 0–34`"]):::good
+    SUSP(["`⚠ SUSPICIOUS
+    Score 35–64`"]):::warn
+    MALIC(["`🚨 MALICIOUS
+    Score 65–100`"]):::bad
+
+    IN --> C1 & C2 & C3 & C4 & C5
+    C1 & C2 & C3 & C4 & C5 --> AGG
+    AGG -- "≥ 35" --> LLM --> AGG
+    AGG -- "0–34"  --> SAFE
+    AGG -- "35–64" --> SUSP
+    AGG -- "65+"   --> MALIC
+    MALIC --> ACT(["`Block Domain
+    SMS Alert
+    Quarantine`"]):::bad
 ```
 
-**LLM Priority Chain (auto mode):**
-```
-1. LM Studio  →  your local OSS 20B model  (primary)
-2. Ollama     →  llama3, mistral, phi3      (local fallback)
-3. OpenAI GPT →  gpt-4o                    (cloud fallback)
-4. Claude     →  claude-sonnet             (final fallback)
-5. Rule-based →  always available          (offline mode)
-```
+---
 
-</details>
+## 〔 08 〕 CORE MODULE TABLE
 
-<br/>
+<div align="center">
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+| ◈ | Module | Detection Method | Output | Severity |
+|:-:|--------|-----------------|--------|:--------:|
+| `01` | ⚡ **DPI Engine** | Payload regex · Signature DB · Protocol anomaly | Attack type + CVE ref | `CRITICAL` |
+| `02` | 🤖 **LLM Analysis** | LM Studio 20B · Locked system prompt | Natural language verdict | `ALL` |
+| `03` | 📧 **Email Analyzer** | NLP · SPF/DKIM · Domain spoof · AI-gen detect | `SAFE / SUSPICIOUS / MALICIOUS` | `0–100` |
+| `04` | 🌐 **IP Intelligence** | ip-api · TOR list · ASN · AbuseIPDB | Reputation + anonymity label | `0–100` |
+| `05` | 👤 **UBA Engine** | Behavioral baseline · Time · Volume · Device · Geo | `INSIDER / COMPROMISED / DEVIATION` | `HIGH` |
+| `06` | 🔥 **SOAR Engine** | 6 auto-rules · LLM confirmation on CRITICAL | Action + audit log | `Instant` |
+| `07` | 📁 **File Scanner** | Shannon entropy · MD5/SHA256 · Signature scan | `CLEAN / SUSPICIOUS / MALICIOUS` | `0–100` |
+| `08` | 🧠 **AI Copilot** | RAG context · LM Studio local · locked scope | Threat explanation + action rec | `Contextual` |
+| `09` | 🚨 **Alert Channels** | Threshold routing · Severity filter | SMS · Email · Voice · Webhook | `Per severity` |
+| `10` | 📊 **Dashboard** | WebSocket stream · Chart.js · Dark/Light mode | Live threat command centre | `Real-time` |
 
-## `> screenshots --all` &nbsp;·&nbsp; Dashboard Preview
+</div>
+
+---
+
+## 〔 09 〕 SCREENSHOTS
 
 ### 📊 Dashboard — Dark Mode
 <img src="assets/Dashboard.png" width="100%"/>
 
+<br/>
+
 ### 🌞 Dashboard — Light Mode
 <img src="assets/Dashboard Light Mode.png" width="100%"/>
 
-### 🧠 AI Copilot
+<br/>
+
+### 🧠 AI Security Copilot
 <img src="assets/AI copilot.png" width="100%"/>
 
-### ⚡ SOAR Audit Log & Response
+<br/>
+
+### ⚡ SOAR Audit Log & Automated Response
 <img src="assets/SOAR Audit Log.png" width="100%"/>
+
+<br/>
 
 ### 👤 User Behavior Analytics
 <img src="assets/User Behaviour.png" width="100%"/>
 
+<br/>
+
 ### 🌐 IP Intelligence & Threat Blacklist
 <img src="assets/IP Tracker.png" width="100%"/>
+
+<br/>
 
 ### 📧 Email Analyzer — Phishing Detection
 <img src="assets/Email Analyzer.png" width="100%"/>
 
-### 🚨 Alert Actions — Critical Response Modal
-<img src="assets/Alert actions.png" width="100%"/>
+<br/>
 
-### 📡 Alert Channels Configuration
-<img src="assets/Channel.png" width="100%"/>
+### 🚨 Critical Alert Action Modal
+<img src="assets/Alert actions.png" width="100%"/>
 
 <br/>
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+### 📡 Alert Channel Configuration
+<img src="assets/Channel.png" width="100%"/>
 
-## `> tree safenet-ai/` &nbsp;·&nbsp; Project Structure
+---
+
+## 〔 10 〕 PROJECT STRUCTURE
 
 ```
 safenet-ai/
 │
-├── 🚀 main.py                              ← Entry point — run this
-├── ⚙️  requirements.txt
-├── 🔐 .env.example                         ← Copy to .env and configure
+├── 🚀  main.py                  ◄─── Entry point
+├── ⚙️   requirements.txt
+├── 🔐  .env.example             ◄─── Copy → .env
 │
 ├── config/
-│   └── ⚙️  settings.py                    ← All config from .env
+│   └── ⚙️   settings.py         ◄─── All env config
 │
 ├── backend/
-│   ├── 🏭 app.py                           ← Flask factory + SocketIO + threads
+│   ├── 🏭  app.py               ◄─── Flask + SocketIO
 │   │
 │   ├── services/
-│   │   ├── 🧠 llm_service.py              ← LM Studio + Ollama + OpenAI + Claude
-│   │   ├── 📦 log_generator.py            ← Synthetic log engine
-│   │   ├── 🔍 threat_intel_service.py     ← IP blacklists + AbuseIPDB
-│   │   ├── 🌐 ip_intelligence_service.py  ← Geo + VPN/TOR + anonymity scoring
-│   │   ├── 📧 email_analyzer_service.py   ← NLP phishing engine
-│   │   ├── 👤 uba_service.py              ← User behavior profiling
-│   │   ├── ⚡ soar_service.py             ← Automated response rules
-│   │   ├── 📁 file_scanner_service.py     ← Entropy + signature scan
-│   │   ├── 📱 sms_service.py              ← Twilio SMS
-│   │   ├── ✉️  email_service.py            ← SendGrid email
-│   │   └── 📞 call_service.py             ← Twilio voice call (TwiML)
+│   │   ├── 🧠  llm_service.py   ◄─── LM Studio + fallbacks
+│   │   ├── 📦  log_generator.py ◄─── Synthetic events
+│   │   ├── 🔍  threat_intel_service.py
+│   │   ├── 🌐  ip_intelligence_service.py
+│   │   ├── 📧  email_analyzer_service.py
+│   │   ├── 👤  uba_service.py
+│   │   ├── ⚡  soar_service.py  ◄─── 6 auto-response rules
+│   │   ├── 📁  file_scanner_service.py
+│   │   ├── 📱  sms_service.py   ◄─── Twilio SMS
+│   │   ├── ✉️   email_service.py ◄─── SendGrid
+│   │   └── 📞  call_service.py  ◄─── Twilio Voice/TwiML
 │   │
 │   └── routes/
-│       ├── 🚨 alerts.py                   ← GET /api/alerts/*
-│       ├── 📡 channels.py                 ← POST /api/channels/*
-│       ├── 🔬 analysis.py                 ← POST /api/analysis/* (LLM)
-│       └── 🌐 intelligence.py             ← /api/intel/* (all modules)
+│       ├── 🚨  alerts.py        ◄─── /api/alerts/*
+│       ├── 📡  channels.py      ◄─── /api/channels/*
+│       ├── 🔬  analysis.py      ◄─── /api/analysis/* (LLM)
+│       └── 🌐  intelligence.py  ◄─── /api/intel/*
 │
 ├── frontend/
-│   ├── 📊 index.html                      ← Main threat dashboard (8 tabs)
-│   └── ⚡ llm.html                        ← LLM engine management panel
+│   ├── 📊  index.html           ◄─── Dashboard (8 tabs)
+│   └── ⚡  llm.html             ◄─── LLM engine panel
 │
-└── data/
-    └── cache/                             ← Event cache storage
+└── data/cache/                  ◄─── In-memory event store
 ```
 
-<br/>
+---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> cat tech-stack.json` &nbsp;·&nbsp; Tech Stack
+## 〔 11 〕 TECH STACK
 
 <div align="center">
 
-**💻 Core Languages**
-
-<img src="https://skillicons.dev/icons?i=python,javascript,html,css,flask&theme=dark"/>
+<img src="https://skillicons.dev/icons?i=python,javascript,html,css,flask,git&theme=dark"/>
 
 <br/><br/>
 
-**🤖 AI / LLM Layer**
-
-<img src="https://img.shields.io/badge/LM%20Studio-00E5FF?style=for-the-badge&logo=openai&logoColor=black"/>
-&nbsp;
-<img src="https://img.shields.io/badge/OpenAI%20Compatible%20API-412991?style=for-the-badge&logo=openai&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/OSS%2020B%20Local%20Model-00E5FF?style=for-the-badge&logo=openai&logoColor=black"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Ollama-39ff8f?style=for-the-badge"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Claude%20API-FF7700?style=for-the-badge"/>
-
-<br/><br/>
-
-**🔌 Real-Time**
-
-<img src="https://img.shields.io/badge/WebSockets-00E5FF?style=for-the-badge&labelColor=03050f"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Flask--SocketIO-000000?style=for-the-badge&logo=flask&logoColor=00E5FF"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Server--Sent%20Events-39ff8f?style=for-the-badge&labelColor=03050f"/>
-
-<br/><br/>
-
-**📊 Visualization**
-
-<img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/jsPDF-FF0000?style=for-the-badge&logo=adobe&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Leaflet.js-199900?style=for-the-badge&logo=leaflet&logoColor=white"/>
-
-<br/><br/>
-
-**🚨 Alerting**
-
-<img src="https://img.shields.io/badge/Twilio%20SMS-F22F46?style=for-the-badge&logo=twilio&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Twilio%20Voice-F22F46?style=for-the-badge&logo=twilio&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/SendGrid-1A82E2?style=for-the-badge&logo=sendgrid&logoColor=white"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Webhooks%20%2F%20SIEM-00E5FF?style=for-the-badge&labelColor=03050f"/>
-
-<br/><br/>
-
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Backend | Python 3.11 · Flask · Flask-SocketIO | Server + real-time events |
-| Frontend | HTML5 · CSS3 · Vanilla JS | 8-tab dashboard UI |
-| LLM (primary) | LM Studio · OSS 20B (OpenAI API) | Local threat analysis |
-| LLM (fallback 1) | Ollama · llama3/mistral/phi3 | Local backup LLM |
-| LLM (fallback 2) | OpenAI GPT-4o | Cloud backup |
-| LLM (fallback 3) | Claude Sonnet | Final cloud fallback |
-| Threat Intel | ip-api.com · AbuseIPDB | IP enrichment |
-| Alerting | Twilio · SendGrid | SMS / email / voice |
-| Visualization | Chart.js | Live threat charts |
-| Crypto | Web Crypto API · SHA-256 | Auth hashing |
+| Layer | Technology | Role |
+|-------|------------|------|
+| **Backend** | Python 3.11 · Flask · Flask-SocketIO | Server · WebSocket · REST API |
+| **Frontend** | HTML5 · CSS3 · Vanilla JS | 8-tab dashboard · Dark/Light |
+| **LLM ①** | LM Studio · OSS 20B (OpenAI API compat) | Local threat intelligence |
+| **LLM ②** | Ollama — llama3 / mistral / phi3 | Local model fallback |
+| **LLM ③** | OpenAI GPT-4o · Claude Sonnet | Cloud fallbacks |
+| **Threat Intel** | ip-api.com · AbuseIPDB | IP enrichment (free tier) |
+| **Alerting** | Twilio SMS · Twilio Voice · SendGrid | Dispatch channels |
+| **Visualization** | Chart.js · SSE streaming | Live charts |
+| **Auth** | Web Crypto API · SHA-256 | Credential hashing |
+| **Packets** | Scapy (DPI) | Payload inspection |
 
 </div>
 
-<br/>
+---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+## 〔 12 〕 QUICKSTART
 
-## `> ./quickstart.sh` &nbsp;·&nbsp; Get Running in 5 Minutes
-
-### Step 1 — Clone
+### `[01]` Clone
 
 ```bash
 git clone https://github.com/Jags-08/safenet-ai.git
 cd safenet-ai
 ```
 
-### Step 2 — Install Dependencies
+### `[02]` Install
 
 ```bash
-pip install flask flask-socketio flask-cors python-dotenv requests twilio sendgrid gevent gevent-websocket
+pip install flask flask-socketio flask-cors python-dotenv \
+            requests twilio sendgrid gevent gevent-websocket
 ```
 
-### Step 3 — Configure LM Studio (Your Local 20B Model)
+### `[03]` Setup LM Studio
 
-```
-1.  Download LM Studio → https://lmstudio.ai
-2.  Load your OSS 20B GGUF model inside LM Studio
-3.  Click "Local Server" tab (left sidebar)
-4.  Enable CORS → Allow all origins ✓
-5.  Click "Start Server"  →  runs on http://localhost:1234
-6.  SafeNet auto-detects your loaded model via /v1/models
-```
+1. Download → https://lmstudio.ai
+2. Load your OSS 20B GGUF model inside LM Studio
+3. Open **Local Server** tab in the left sidebar
+4. Enable CORS → Allow all origins ✓
+5. Click **Start Server** → running on `http://localhost:1234`
 
-### Step 4 — Configure Environment
+> SafeNet auto-detects your model name via `/v1/models`
+
+### `[04]` Configure `.env`
 
 ```bash
 cp .env.example .env
-nano .env  # Edit with your settings
 ```
 
 ```env
-# Minimum required (everything else is optional)
+# ── Required ──────────────────────────
 LM_STUDIO_URL=http://localhost:1234
 LM_STUDIO_MODEL=auto
 LLM_MODE=auto
 
-# Optional — alerts
+# ── Optional: SMS & Voice ──────────────
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_token
 TWILIO_FROM_NUMBER=+1XXXXXXXXXX
 SMS_RECIPIENT=+91XXXXXXXXXX
+
+# ── Optional: Email ────────────────────
 SENDGRID_API_KEY=SG.xxxxxxxxx
+EMAIL_FROM=safenet@yourdomain.com
 EMAIL_TO=security@company.com
 ```
 
-### Step 5 — Launch
+### `[05]` Launch
 
 ```bash
 python main.py
 ```
 
-```
-╔══════════════════════════════════════════════════════════════╗
-║          S A F E N E T   A I   v 4 . 0                      ║
-║   Advanced Threat Intelligence & Detection Platform          ║
-╠══════════════════════════════════════════════════════════════╣
-║  Dashboard  →  http://localhost:5000                         ║
-║  LLM Panel  →  http://localhost:5000/llm                     ║
-║  API        →  http://localhost:5000/api                     ║
-╚══════════════════════════════════════════════════════════════╝
-  LLM Mode  : auto  (llama3 @ http://localhost:1234)
-  SMS       : ✓ Twilio
-  Email     : ✓ SendGrid
-```
+Once running, open your browser:
 
-> ✅ **No cloud required. No data egress. No signup.** Everything stays on your machine.
+| Interface | URL |
+|-----------|-----|
+| 📊 Dashboard | http://localhost:5000 |
+| 🧠 LLM Panel | http://localhost:5000/llm |
+| 📖 API Docs | http://localhost:5000/api |
 
-<br/>
+---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+## 〔 13 〕 SOAR IN ACTION
 
-## `> cat api-reference.md` &nbsp;·&nbsp; API Reference
+| Trigger | Rule | Action | Dispatch |
+|---------|:----:|--------|----------|
+| 847 SSH failures in 60s | `R003` | BLOCK_IP ✓ LLM | SMS + Email |
+| C2 beacon port 4444 → known infra | `R001` | BLOCK + ISOLATE | SMS + Voice Call |
+| HTTP flood 12,400 req/s | `R002` | RATE_LIMIT | Email + Webhook |
+| EternalBlue SMB · MS17-010 | `R006` | ISOLATE_HOST ✓ | SMS + Voice Call |
+| SQL injection UNION SELECT | `R005` | ALERT_ONLY | Webhook → SIEM |
+| Port scan 1–65535 detected | `R004` | ALERT_ONLY | Email |
+| Phishing: paypa1.com · score 94 | `AUTO` | QUARANTINE | SMS + Email |
+| File entropy 7.8 · .pdf.exe | `AUTO` | QUARANTINE | Email |
+| New-country login + VPN | `UBA` | SESSION_KILL | SMS |
+| Bulk download 11× baseline 22:00 | `UBA` | INSIDER_ALERT | Email + Call |
 
-```
-METHOD  ENDPOINT                         DESCRIPTION
-──────  ───────────────────────────────  ────────────────────────────────
-GET     /api/alerts/recent               Last 50 threat events
-GET     /api/alerts/cache                Full event cache
-GET     /api/alerts/stats                Live system statistics
-DELETE  /api/alerts/cache                Clear event cache
+---
 
-POST    /api/channels/configure          Enable/disable alert channel
-POST    /api/channels/test               Send test alert (SMS/email/call)
-POST    /api/channels/dispatch           Manual event dispatch
+## 〔 14 〕 API REFERENCE
 
-POST    /api/analysis/analyze            Run LLM on threat batch
-POST    /api/analysis/copilot            AI copilot chat query
-GET     /api/analysis/status             LLM health check (all backends)
-POST    /api/analysis/set-mode           Switch LLM mode
-POST    /api/analysis/set-model          Change model (any provider)
-GET     /api/analysis/lmstudio/models    List loaded LM Studio models
-POST    /api/analysis/lmstudio/stream    Token stream via SSE
+**Alerts**
 
-GET     /api/intel/ip/<ip>               Full IP intelligence report
-GET     /api/intel/ip/map                Attack origin geo data
-GET     /api/intel/blacklist             Current IP blacklist
-POST    /api/intel/blacklist/add         Add IP to blacklist
-DELETE  /api/intel/blacklist/<ip>        Remove IP from blacklist
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/alerts/recent` | Last 50 threat events |
+| `GET` | `/api/alerts/cache` | Full event cache |
+| `GET` | `/api/alerts/stats` | Live system statistics |
+| `DELETE` | `/api/alerts/cache` | Clear event cache |
 
-POST    /api/intel/email/analyze         Analyze email for phishing
-POST    /api/intel/email/analyze-eml     Analyze raw .eml file upload
+**Channels**
 
-GET     /api/intel/soar/log              SOAR audit log
-GET     /api/intel/soar/stats            Automation statistics
-POST    /api/intel/soar/action           Execute manual SOAR action
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/channels/configure` | Enable / disable alert channel |
+| `POST` | `/api/channels/test` | Send test SMS / email / call |
+| `POST` | `/api/channels/dispatch` | Manual event dispatch |
 
-GET     /api/intel/uba/profiles          All user behavioral profiles
-GET     /api/intel/uba/alerts            UBA anomaly alerts
-POST    /api/intel/uba/event             Submit user event for profiling
+**Analysis**
 
-POST    /api/intel/files/scan            Upload file for malware scan
-GET     /api/intel/files/history         Scan history
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/analysis/analyze` | Run LLM on threat batch |
+| `POST` | `/api/analysis/copilot` | AI copilot chat |
+| `GET` | `/api/analysis/status` | LLM health — all backends |
+| `POST` | `/api/analysis/set-mode` | Switch LLM mode at runtime |
+| `GET` | `/api/analysis/lmstudio/models` | List loaded LM Studio models |
+| `POST` | `/api/analysis/lmstudio/stream` | Token-stream via SSE |
 
-POST    /api/intel/copilot/chat          Ask the security copilot
-POST    /api/intel/xai/explain           Explain why a threat was flagged
-GET     /api/intel/report/summary        AI-generated executive summary
-```
+**Intelligence**
 
-<br/>
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/intel/ip/<ip>` | Full IP intelligence report |
+| `GET` | `/api/intel/blacklist` | Blacklisted IPs |
+| `POST` | `/api/intel/blacklist/add` | Add IP to blacklist |
+| `POST` | `/api/intel/email/analyze` | Analyze email for phishing |
+| `GET` | `/api/intel/soar/log` | SOAR audit log |
+| `POST` | `/api/intel/soar/action` | Execute manual SOAR action |
+| `GET` | `/api/intel/uba/profiles` | User behavioral profiles |
+| `GET` | `/api/intel/uba/alerts` | UBA anomaly alerts |
+| `POST` | `/api/intel/files/scan` | Upload file for malware scan |
+| `POST` | `/api/intel/copilot/chat` | Ask the AI copilot |
+| `POST` | `/api/intel/xai/explain` | Why was this threat flagged? |
+| `GET` | `/api/intel/report/summary` | AI executive threat summary |
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+---
 
-## `> soar --live-demo` &nbsp;·&nbsp; SOAR in Action
-
-SafeNet detects and responds **before a human even reads the alert**:
-
-```
-⚡  14 failed logins in 30s from 185.220.101.34
-    → Rule R003 triggered · BLOCK_IP executed · LLM confirmed ✓
-    → SMS sent to +91xxxxxxxxxx · "BRUTE FORCE BLOCKED: 185.220.x"
-
-🌍  Login from new country (RU) · VPN exit node · Impossible travel
-    → Anonymity score: 96 · Action: SESSION_TERMINATED + ALERT
-
-📧  Email: fake-paypa1-login.com subject "Verify your account NOW"
-    → MALICIOUS (score 89/100) · SPF FAIL · Typosquatting detected
-    → Quarantined · Admin email sent
-
-💻  Unknown MAC DE:AD:BE:EF:00:21 detected on internal subnet
-    → Device flagged · Webhook fired to SIEM
-
-📈  Traffic 11x baseline from single source over 90 seconds
-    → Rule R002 triggered · RATE_LIMIT applied · Email alert sent
-
-🔐  Uploaded file entropy: 7.8 · Double extension: invoice.pdf.exe
-    → MALICIOUS verdict · File quarantined · AI malware analysis run
-
-🦀  C2 beacon on port 4444 → 91.108.4.81 (known C2 infra)
-    → Rule R001 triggered · BLOCK_IP + ISOLATE_HOST · CRITICAL SMS
-```
-
-<br/>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> cat privacy-policy.py` &nbsp;·&nbsp; Security & Privacy
+## 〔 15 〕 PRIVACY
 
 ```python
 safenet_privacy = {
-    "architecture"  : "Offline-first · Local-only by default",
-    "llm_inference" : "localhost:1234 via LM Studio — never cloud",
-    "data_storage"  : "In-memory only — nothing written to disk by default",
-    "cloud_calls"   : 0,
-    "telemetry"     : False,
-    "tracking"      : None,
-    "data_sold"     : "Never",
-    "control"       : "100% user-owned",
-    "encryption"    : "SHA-256 via Web Crypto API",
-    "api_keys"      : ".env file — never hardcoded",
-    "network_egress": "Only for: Twilio/SendGrid (if configured), "
-                      "ip-api.com (IP lookup), AbuseIPDB (if key set). "
-                      "All optional. All opt-in.",
+    "architecture"   : "Offline-first · local-only by default",
+    "llm_inference"  : "localhost:1234 — never leaves your machine",
+    "data_storage"   : "In-memory only — nothing written to disk",
+    "cloud_calls"    : 0,
+    "telemetry"      : False,
+    "tracking"       : None,
+    "data_sold"      : "Never",
+    "control"        : "100% yours",
+    "optional_egress": [
+        "Twilio / SendGrid  — only if you configure them",
+        "ip-api.com         — free IP geolocation, no auth",
+        "AbuseIPDB          — only if ABUSEIPDB_KEY is set",
+    ],
 }
 ```
 
-<br/>
+---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> cat design-system.md` &nbsp;·&nbsp; Design Language
-
-**🎨 Color Palette — Cyber Dark**
+## 〔 16 〕 DESIGN SYSTEM
 
 | Token | Hex | Usage |
-|-------|-----|-------|
-| Background Void | `#07070A` | Page background |
-| Surface | `#12121A` | Cards, panels |
-| Cyber Cyan | `#00E5FF` | Primary accent, KPIs |
-| Neon Crimson | `#FF1A36` | Critical threats (bright red, impossible to miss) |
-| Neon Green | `#3DB87A` | Safe, clean, online states |
-| Warning Amber | `#E08820` | HIGH severity |
-| Royal Gold | `#C9A84C` | UI chrome, borders, highlights |
-| Ice Blue | `#4A9EFF` | IPs, source addresses |
-| Border | `rgba(201,168,76,0.09)` | Hairlines |
-
-**✍️ Typography**
+|-------|:---:|-------|
+| Background Void | `#000005` | Page background — deepest black |
+| Surface | `#07070a` | Cards · Panels |
+| **Cyber Cyan** | `#00E5FF` | Primary accent · KPIs · headings |
+| **Neon Crimson** | `#FF1A36` | Critical threats — bright, immediate |
+| **Neon Green** | `#39FF8F` | Safe · Clean · Online states |
+| Warning Amber | `#FFC107` | HIGH severity · warnings |
+| Royal Gold | `#C9A84C` | UI chrome · borders |
+| Ice Blue | `#4A9EFF` | IP addresses · source data |
 
 | Role | Font |
 |------|------|
-| Display / headings | `Cormorant Garamond` — italic serif for authority |
-| UI / monospace | `IBM Plex Mono` — all body text, data, values |
+| Display | `Cormorant Garamond` — italic serif, authority |
+| UI / Data | `IBM Plex Mono` — all values, logs, terminal |
 
-**🌗 Theme Support**
+---
 
-Both dark and light modes are implemented via CSS custom properties. Toggle in the header — no page reload required.
+## 〔 17 〕 ROADMAP
 
-<br/>
+| Status | Feature |
+|:------:|---------|
+| ✅ | Real-time WebSocket threat stream |
+| ✅ | AI email phishing detection (NLP + SPF/DKIM/DMARC) |
+| ✅ | IP intelligence · VPN/TOR/proxy detection |
+| ✅ | User Behavior Analytics (UBA) · insider threat |
+| ✅ | SOAR automation · 6 rules · audit log |
+| ✅ | File malware scanner (entropy + signatures) |
+| ✅ | AI Security Copilot (local LLM · cybersec-locked) |
+| ✅ | LM Studio OSS 20B integration (OpenAI-compatible) |
+| ✅ | LLM fallback chain (LM Studio → Ollama → OpenAI → Claude) |
+| ✅ | SMS + Email + Voice Call + Webhook alerts |
+| ✅ | Dark / Light mode · in-app notification stack |
+| ✅ | XAI Explainability module |
+| ✅ | Executive threat report generator |
+| ✅ | LLM management panel (/llm) · live model switching |
+| 🔄 | Real-time packet sniffing (Scapy live capture) |
+| 🔄 | ML anomaly prediction (Isolation Forest + XGBoost) |
+| 🔄 | Attack map geo-visualization |
+| ⬜ | Firewall rule auto-push |
+| ⬜ | Mobile companion app (React Native) |
+| ⬜ | Multi-user SOC admin panel |
+| ⬜ | MISP / OTX threat intelligence feed integration |
+| ⬜ | Dark web credential leak monitoring |
+| ⬜ | AWS CloudWatch / Azure Sentinel integration |
+| ⬜ | Splunk / Elastic SIEM native connector |
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+---
 
-## `> cat roadmap.md` &nbsp;·&nbsp; Roadmap
-
-```
-STATUS   FEATURE
-──────   ──────────────────────────────────────────────────────
-  ✅     Real-time WebSocket threat stream
-  ✅     AI phishing + email fraud detection
-  ✅     IP intelligence + VPN/TOR/proxy detection
-  ✅     User Behavior Analytics (UBA) + insider threat
-  ✅     SOAR automation engine + audit log
-  ✅     File malware scanner (entropy + signatures)
-  ✅     AI Security Copilot (local LLM, cybersec-locked)
-  ✅     LM Studio integration (OSS 20B via OpenAI API)
-  ✅     LLM fallback chain (LM Studio → Ollama → OpenAI → Claude)
-  ✅     SMS + Email + Voice Call + Webhook alerts
-  ✅     Dark / Light mode + in-app notifications
-  ✅     SOAR manual response panel
-  ✅     XAI Explainability module
-  ✅     Executive threat report generator
-  ✅     LLM management panel (/llm)
-  🔄     Real-time packet sniffing (Scapy live capture)
-  🔄     ML anomaly prediction (Isolation Forest + XGBoost)
-  🔄     Attack map geo-visualization (Leaflet.js)
-  ⬜     Firewall rule auto-push integration
-  ⬜     Mobile companion app (React Native)
-  ⬜     Multi-user SOC admin panel
-  ⬜     MISP / OTX threat feed integration
-  ⬜     Dark web credential leak monitoring
-  ⬜     Cloud log integration (AWS CloudWatch / Azure Sentinel)
-  ⬜     SIEM native connector (Splunk / Elastic SIEM)
-```
-
-<br/>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
-
-## `> whoami --author` &nbsp;·&nbsp; Author
+## 〔 18 〕 AUTHOR
 
 <div align="center">
 
-<br/>
+### Jagrut Joshi
 
-<img src="https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&weight=600&size=14&pause=1000&color=00E5FF&center=true&vCenter=true&width=600&lines=👨‍💻+Jagrut+Joshi;B.Tech+Computer+Science;DY+Patil+International+University%2C+Pune;Building+AI-powered+security+tools+🛡️" />
+**B.Tech Computer Science · DY Patil International University, Pune**
 
 <br/>
 
 <a href="https://github.com/Jags-08">
-  <img src="https://img.shields.io/badge/GitHub-Jags--08-181717?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117"/>
+  <img src="https://img.shields.io/badge/◈%20GitHub-Jags--08-00E5FF?style=for-the-badge&logo=github&logoColor=white&labelColor=000008"/>
 </a>
 &nbsp;
 <a href="https://www.linkedin.com/in/joshi-jagrut/">
-  <img src="https://img.shields.io/badge/LinkedIn-Jagrut%20Joshi-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+  <img src="https://img.shields.io/badge/◈%20LinkedIn-Jagrut_Joshi-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=000008"/>
 </a>
 &nbsp;
 <a href="mailto:jagrutjoshi02@gmail.com">
-  <img src="https://img.shields.io/badge/Email-jagrutjoshi02@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
+  <img src="https://img.shields.io/badge/◈%20Email-jagrutjoshi02@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white&labelColor=000008"/>
 </a>
 
 <br/><br/>
 
-```
-"I build things that protect other things."
-```
+> *"I build things that protect other things."*
 
 <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="45"/>
 
 <br/>
 
-*If SafeNet AI helped you, a ⭐ star goes a long way — thank you!*
-
-<br/>
+*If SafeNet AI helped you, a ⭐ goes a long way — thank you.*
 
 </div>
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:03050f,30:00E5FF,70:00E5FF,100:03050f" width="100%"/>
-</p>
+---
 
-## `> cat DISCLAIMER.txt`
+## 〔 19 〕 LEGAL
 
-> **SafeNet AI is built for authorized security monitoring, research, and educational purposes only.**
-> Deep packet inspection and network monitoring may be subject to local and regional regulations.
-> Always obtain proper written authorization before monitoring any network or system you do not own or operate.
-> The author accepts no liability for unauthorized or illegal use of this software.
-
-## `> cat LICENSE`
+> **SafeNet AI is built for authorized security monitoring, research, and educational use only.**
+> Deep packet inspection and network monitoring tools may be subject to local and regional law.
+> Always obtain written authorization before monitoring any network or system you do not own.
+> The author accepts no liability for unauthorized or illegal use.
 
 ```
 MIT License — free to use, modify, and distribute with attribution.
-See LICENSE file for full terms.
-
 Copyright (c) 2025 Jagrut Joshi
 ```
 
-<br/>
+---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:03050f,40:0a0f2e,70:060d24,100:03050f&height=140&section=footer&animation=fadeIn" width="100%" />
-</p>
+<div align="center">
 
-<p align="center">
-  <sub>
-    Built with obsession by <a href="https://github.com/Jags-08">Jagrut Joshi</a> &nbsp;·&nbsp; SafeNet AI v4.0 &nbsp;·&nbsp; 
-    <code>localhost:5000</code> — your private SOC
-  </sub>
-</p>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:000005,30:03050f,70:060d1e,100:000005&height=150&section=footer&animation=fadeIn" width="100%"/>
+
+**◈ S A F E N E T   A I   v 4 . 0 · localhost:5000 · YOUR PRIVATE SOC ◈**
+
+<sub>Built with obsession by <a href="https://github.com/Jags-08">Jagrut Joshi</a></sub>
+
+</div>
