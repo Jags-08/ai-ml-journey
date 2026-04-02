@@ -6,7 +6,7 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00E5FF&center=true&vCenter=true&width=800&lines=Structured+AI+%26+ML+Learning+Path+%F0%9F%A7%A0;Real-World+AI+Projects+from+Scratch+%F0%9F%9A%80;Learn+to+Implement+to+Apply+to+Improve+%F0%9F%94%84;Building+Intelligent+Systems+that+Matter+%F0%9F%92%A1" />
 
-<br/><br/>
+<br/>
 
 <img src="https://img.shields.io/badge/Status-Active-39ff8f?style=for-the-badge&logo=statuspage&logoColor=white"/>
 <img src="https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
