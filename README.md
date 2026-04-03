@@ -4,7 +4,9 @@
 
 <br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&weight=700&size=17&pause=1000&color=00E5FF&center=true&vCenter=true&width=820&lines=Structured+AI+%26+ML+Learning+Path+🧠;Real-World+AI+Projects+Built+from+Scratch+🚀;Learn+→+Implement+→+Apply+→+Improve+🔄;Building+Intelligent+Systems+that+Matter+💡" />
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=IBM+Plex+Mono&size=18&duration=2500&pause=1000&color=00E5FF&center=true&vCenter=true&width=500&lines=AI+%26+ML+Journey;Building+Real+World+Projects;Learn+→+Build+→+Grow" />
+</p>
 
 <br/>
 
