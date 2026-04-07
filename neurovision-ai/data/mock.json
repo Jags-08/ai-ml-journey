@@ -1,0 +1,32 @@
+{
+  "samples": {
+    "street": {
+      "detections": [
+        { "id": "det_person_0", "label": "person", "confidence": 0.94, "bbox": [80, 120, 160, 380], "color": "#4d7fff" },
+        { "id": "det_person_1", "label": "person", "confidence": 0.87, "bbox": [220, 140, 290, 370], "color": "#4d7fff" },
+        { "id": "det_car_0",    "label": "car",    "confidence": 0.91, "bbox": [300, 280, 520, 420], "color": "#00e5a0" },
+        { "id": "det_bicycle_0","label": "bicycle","confidence": 0.78, "bbox": [140, 300, 210, 420], "color": "#a78bfa" }
+      ],
+      "emotions": [
+        { "faceId": 1, "dominant": "Neutral", "scores": { "Neutral": 0.62, "Focused": 0.22, "Calm": 0.10, "Happy": 0.06 }, "bbox": [80, 120, 160, 380] },
+        { "faceId": 2, "dominant": "Happy",   "scores": { "Happy": 0.71, "Neutral": 0.18, "Surprised": 0.07, "Calm": 0.04 }, "bbox": [220, 140, 290, 370] }
+      ]
+    },
+    "portrait": {
+      "detections": [
+        { "id": "det_person_0", "label": "person", "confidence": 0.98, "bbox": [180, 60, 620, 500], "color": "#4d7fff" }
+      ],
+      "emotions": [
+        { "faceId": 1, "dominant": "Happy", "scores": { "Happy": 0.82, "Neutral": 0.11, "Calm": 0.05, "Surprised": 0.02 }, "bbox": [180, 60, 620, 500] }
+      ]
+    },
+    "nature": {
+      "detections": [
+        { "id": "det_tree_0", "label": "tree",   "confidence": 0.95, "bbox": [20, 40, 200, 480], "color": "#4ade80" },
+        { "id": "det_tree_1", "label": "tree",   "confidence": 0.92, "bbox": [560, 30, 780, 480], "color": "#4ade80" },
+        { "id": "det_bird_0", "label": "bird",   "confidence": 0.76, "bbox": [280, 100, 340, 145], "color": "#fbbf24" }
+      ],
+      "emotions": []
+    }
+  }
+}
