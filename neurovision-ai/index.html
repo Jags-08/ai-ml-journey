@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NeuroVision AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ TOP BAR ═══ -->
+  <header id="topbar" class="topbar">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">NeuroVision</div>
+        <div class="brand-sub">AI Vision System</div>
+      </div>
+    </div>
+
+    <nav id="step-progress" class="step-progress" aria-label="Progress">
+      <div class="step active" data-step="1"><span class="step-num">1</span><span class="step-label">Upload</span></div>
+      <div class="step-sep"></div>
+      <div class="step" data-step="2"><span class="step-num">2</span><span class="step-label">Analyze</span></div>
+      <div class="step-sep"></div>
+      <div class="step" data-step="3"><span class="step-num">3</span><span class="step-label">Understand</span></div>
+      <div class="step-sep"></div>
+      <div class="step" data-step="4"><span class="step-num">4</span><span class="step-label">Act</span></div>
+    </nav>
+
+    <div class="topbar-right">
+      <div id="file-meta" class="file-meta" style="display:none">
+        <span id="file-name" class="file-name"></span>
+        <span id="file-dims" class="file-dims"></span>
+      </div>
+      <button id="new-btn" class="btn btn-ghost" style="display:none" data-action="newImage">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Image
+      </button>
+      <button id="export-btn" class="btn btn-primary" style="display:none" data-action="openExport">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ UPLOAD PHASE ═══ -->
+  <main id="upload-phase" class="upload-phase">
+    <div class="upload-ambient"></div>
+
+    <div class="upload-hero">
+      <p class="upload-eyebrow">AI Vision Intelligence</p>
+      <h1 class="upload-title">See <em>beyond</em><br>the image</h1>
+      <p class="upload-sub">Drop any image and NeuroVision instantly detects objects, reads emotions, and surfaces humanized insights — no clicking required.</p>
+    </div>
+
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="file-input" accept="image/*" style="display:none"/>
+      <div class="dz-icon">
+        <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+      </div>
+      <div class="dz-title">Drop your image here</div>
+      <div class="dz-sub">or <span class="dz-link">click to browse</span> · PNG, JPG, WEBP, GIF up to 20MB</div>
+      <div class="dz-samples">
+        <span class="dz-sample-label">Try a sample →</span>
+        <button class="sample-pill" data-sample="street">🏙 Street</button>
+        <button class="sample-pill" data-sample="portrait">👤 Portrait</button>
+        <button class="sample-pill" data-sample="nature">🌿 Nature</button>
+      </div>
+    </div>
+
+    <div class="upload-features">
+      <div class="feat-item"><span class="feat-icon">🎯</span><span>Object detection</span></div>
+      <div class="feat-sep">·</div>
+      <div class="feat-item"><span class="feat-icon">😊</span><span>Emotion analysis</span></div>
+      <div class="feat-sep">·</div>
+      <div class="feat-item"><span class="feat-icon">💡</span><span>AI insights</span></div>
+      <div class="feat-sep">·</div>
+      <div class="feat-item"><span class="feat-icon">⚡</span><span>Smart actions</span></div>
+    </div>
+  </main>
+
+  <!-- ═══ WORKSPACE ═══ -->
+  <main id="workspace" class="workspace" style="display:none">
+
+    <!-- LEFT: Insights Panel -->
+    <aside id="insights-panel" class="panel panel-left">
+      <div class="panel-head">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Insights
+        </div>
+        <span class="panel-tag tag-ai">AI</span>
+      </div>
+      <div id="insights-content" class="panel-body">
+        <div class="panel-empty" id="insights-empty">
+          <div class="panel-empty-icon">🧠</div>
+          <p>Insights will auto-populate after upload</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: Image Canvas -->
+    <section id="canvas-area" class="canvas-area">
+
+      <!-- Analyzing overlay -->
+      <div id="analyzing-overlay" class="analyzing-overlay" style="display:none">
+        <div class="analyzing-card">
+          <div class="analyzing-pulse"></div>
+          <div class="analyzing-icon">🧠</div>
+          <div class="analyzing-title">Analyzing image…</div>
+          <div id="analyzing-step-label" class="analyzing-step">Detecting objects</div>
+          <div class="analyzing-track">
+            <div id="analyzing-bar" class="analyzing-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas wrapper -->
+      <div id="canvas-wrap" class="canvas-wrap">
+        <canvas id="main-canvas" class="main-canvas"></canvas>
+        <canvas id="overlay-canvas" class="overlay-canvas"></canvas>
+      </div>
+
+      <!-- Floating canvas controls -->
+      <div class="canvas-controls" id="canvas-controls">
+        <div class="ctrl-group">
+          <button id="toggle-det-btn" class="ctrl-btn on" title="Toggle detections" data-action="toggleDetections">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </button>
+          <button id="toggle-emo-btn" class="ctrl-btn on" title="Toggle emotions" data-action="toggleEmotions">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </button>
+        </div>
+        <div class="ctrl-group">
+          <button id="undo-btn" class="ctrl-btn" title="Undo" disabled data-action="undo">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          </button>
+          <button id="redo-btn" class="ctrl-btn" title="Redo" disabled data-action="redo">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Actions Panel -->
+    <aside id="actions-panel" class="panel panel-right">
+      <div class="panel-head">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Actions
+        </div>
+        <span class="panel-tag tag-user">YOU</span>
+      </div>
+      <div id="actions-content" class="panel-body">
+        <p class="actions-intent-header">What do you want to do?</p>
+        <div id="suggested-actions" class="suggested-actions">
+          <div class="panel-empty" id="actions-empty">
+            <div class="panel-empty-icon">⚡</div>
+            <p>Contextual suggestions after analysis</p>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <p class="section-label">Adjust Image</p>
+        <div id="filter-grid" class="filter-grid"></div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ═══ CHAT BAR ═══ -->
+  <footer id="chat-bar" class="chat-bar" style="display:none">
+    <div id="chat-history" class="chat-history" style="display:none"></div>
+    <div class="chat-quick" id="chat-quick">
+      <button class="quick-btn" data-prompt="Explain what's happening in this image">Explain image</button>
+      <button class="quick-btn" data-prompt="What objects and people are visible here?">What's here?</button>
+      <button class="quick-btn" data-prompt="How can I improve or enhance this image?">Improve this</button>
+      <button class="quick-btn emotion-btn" data-prompt="Tell me about the emotions visible in this image" style="display:none">Read emotions</button>
+    </div>
+    <div class="chat-input-row">
+      <div class="chat-nv-badge">NV</div>
+      <input id="chat-input" class="chat-input" type="text" placeholder="Ask anything about this image…" maxlength="500" autocomplete="off"/>
+      <button id="chat-send" class="chat-send">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </footer>
+
+  <!-- ═══ EXPORT MODAL ═══ -->
+  <div id="export-modal" class="modal-backdrop" style="display:none">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title">Export Image</h3>
+        <button class="modal-close" data-action="closeExport">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="export-opts">
+          <div class="export-opt selected" data-export="0">
+            <span class="export-opt-icon">🖼</span>
+            <div><div class="export-opt-name">Edited image</div><div class="export-opt-desc">Filters applied, no overlays</div></div>
+          </div>
+          <div class="export-opt" data-export="1">
+            <span class="export-opt-icon">🎯</span>
+            <div><div class="export-opt-name">With detections</div><div class="export-opt-desc">Bounding boxes drawn on</div></div>
+          </div>
+          <div class="export-opt" data-export="2">
+            <span class="export-opt-icon">📷</span>
+            <div><div class="export-opt-name">Original</div><div class="export-opt-desc">No changes applied</div></div>
+          </div>
+        </div>
+        <button class="btn btn-primary w-full" data-action="doExport">Download PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+</div><!-- #app -->
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
