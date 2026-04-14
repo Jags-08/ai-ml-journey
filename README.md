@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=260&text=AI-ML%20Journey&fontSize=85&fontColor=00E5FF&color=0:000005,40:03050f,100:060d1e&desc=Learn%20%C2%B7%20Build%20%C2%B7%20Deploy%20%C2%B7%20Grow&descSize=24&descAlignY=76&descAlign=50&animation=fadeIn&stroke=00E5FF&strokeWidth=2" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=260&text=AI-ML%20Journey&fontSize=85&fontColor=00E5FF&color=0:000005,40:03050f,100:060d1e&desc=Learn%20%C2%B7%20Build%20%C2%B7%20Deploy%20%C2%B7%20Grow&descSize=24&descAlignY=76&descAlign=50&animation=fadeIn&stroke=00E5FF&strokeWidth=1" width="100%" />
 
 <br/>
 
