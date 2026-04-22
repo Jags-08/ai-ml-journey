@@ -3,6 +3,7 @@
 <h3 align="center">
 An intelligent visual system that doesn't just analyze images — it understands and improves them.
 </h3>
+
 <p align="center">
 🚀 AI • ⚡ Real-time • 🧠 Autonomous • 🎯 Context-aware
 </p>
