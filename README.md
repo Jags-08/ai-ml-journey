@@ -815,7 +815,7 @@ If this repository helps you — whether learning AI, building something similar
 
 > **SafeNet AI** is for authorized security monitoring, research, and educational use only. Always obtain proper authorization before monitoring any network you don't own.
 
-> **NeuroVision AI** (upcoming) will be subject to responsible AI and privacy-first design principles.
+> **NeuroVision AI** (upcoming) will be subject to responsible AI and privacy-first design principles
 
 ---
 
