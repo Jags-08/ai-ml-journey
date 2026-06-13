@@ -823,7 +823,7 @@ If this repository helps you — whether learning AI, building something similar
 
 ```
 MIT License — free to use, modify, and build upon.
-See LICENSE file for details.
+See LICENSE file for details
 ```
 
 <br/>
